@@ -1,0 +1,79 @@
+import { kv } from '@vercel/kv'
+import { generateLyricsAndPrompt } from './claude'
+import { generateSong } from './mureka'
+import { sendSongEmail } from './resend'
+import { Order, PendingOrder, QuestionnaireData, SongPage } from './types'
+
+export async function processOrder(
+  questionnaireData: QuestionnaireData,
+  orderRef: string
+): Promise<void> {
+  const orderId = crypto.randomUUID()
+  const songPageId = crypto.randomUUID()
+
+  const order: Order = {
+    id: orderId,
+    questionnaireData,
+    status: 'generating',
+    songUrls: [],
+    songPageId,
+    createdAt: Date.now(),
+    paidAt: Date.now(),
+  }
+
+  await kv.set(`order:${orderId}`, order)
+  await kv.del(`pending:${orderRef}`)
+
+  try {
+    const { lyrics, murekaPrompt } = await generateLyricsAndPrompt(questionnaireData)
+
+    const songCount = questionnaireData.versions === 3 ? 3 : 1
+    const songPromises = Array.from({ length: songCount }, () =>
+      generateSong(murekaPrompt, lyrics)
+    )
+    const songUrls = await Promise.all(songPromises)
+
+    const songPage: SongPage = {
+      id: songPageId,
+      orderId,
+      recipientName: questionnaireData.recipientName,
+      occasion: questionnaireData.occasion,
+      artistStyle: questionnaireData.artistStyle,
+      songUrls,
+      createdAt: Date.now(),
+    }
+
+    await kv.set(`song:${songPageId}`, songPage)
+    await kv.set(`order:${orderId}`, { ...order, status: 'complete', songUrls })
+
+    const songPageUrl = `${process.env.NEXT_PUBLIC_URL}/song/${songPageId}`
+    await sendSongEmail({
+      customerEmail: questionnaireData.customerEmail,
+      recipientName: questionnaireData.recipientName,
+      occasion: questionnaireData.occasion,
+      songPageUrl,
+      songUrls,
+    })
+
+    console.log(`Order ${orderId} complete — song page: ${songPageUrl}`)
+  } catch (error) {
+    console.error(`Order ${orderId} failed:`, error)
+    await kv.set(`order:${orderId}`, { ...order, status: 'failed' })
+    throw error
+  }
+}
+
+export async function getPendingOrder(orderRef: string): Promise<PendingOrder | null> {
+  return kv.get<PendingOrder>(`pending:${orderRef}`)
+}
+
+export async function storePendingOrder(
+  orderRef: string,
+  questionnaireData: QuestionnaireData
+): Promise<void> {
+  const pending: PendingOrder = {
+    questionnaireData,
+    createdAt: Date.now(),
+  }
+  await kv.set(`pending:${orderRef}`, pending, { ex: 60 * 60 * 24 })
+}

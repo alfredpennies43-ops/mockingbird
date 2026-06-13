@@ -1,0 +1,233 @@
+.shell {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #0b0e1a;
+  color: #f0eee8;
+  font-family: var(--font-manrope), sans-serif;
+  padding: 2rem 1.2rem;
+  padding-top: max(2rem, env(safe-area-inset-top));
+  padding-bottom: max(2rem, env(safe-area-inset-bottom));
+  padding-left: max(1.2rem, env(safe-area-inset-left));
+  padding-right: max(1.2rem, env(safe-area-inset-right));
+}
+
+.inner {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.logoWrap {
+  margin-bottom: 2rem;
+}
+
+.progress {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.progressStep {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  transition: background 0.3s;
+}
+
+.progressStepActive {
+  background: linear-gradient(90deg, #ff2d78, #c026d3);
+}
+
+.progressStepInactive {
+  background: rgba(240, 238, 232, 0.1);
+}
+
+.title {
+  font-family: var(--font-manrope), sans-serif;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+  line-height: 1.15;
+}
+
+.label {
+  display: block;
+  font-size: 0.82rem;
+  color: rgba(240, 238, 232, 0.6);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  min-height: 48px;
+  background: #131729;
+  border: 1px solid rgba(240, 238, 232, 0.1);
+  border-radius: 12px;
+  color: #f0eee8;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: rgba(255, 45, 120, 0.5);
+}
+
+.inputMb {
+  margin-bottom: 1.2rem;
+}
+
+.textarea {
+  resize: vertical;
+  line-height: 1.6;
+  min-height: 140px;
+}
+
+.packageGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.packageCard {
+  border-radius: 16px;
+  padding: 1.5rem 1rem;
+  cursor: pointer;
+  text-align: center;
+  color: #f0eee8;
+  font-family: inherit;
+  width: 100%;
+  min-height: 48px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.packageCardDefault {
+  background: #131729;
+  border: 1px solid rgba(240, 238, 232, 0.07);
+}
+
+.packageCardSelected {
+  background: rgba(255, 45, 120, 0.08);
+  border: 1px solid rgba(255, 45, 120, 0.4);
+}
+
+.packageCardFeatured {
+  position: relative;
+}
+
+.packageBadge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #ff2d78, #c026d3);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0.25rem 0.75rem;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+.packagePrice {
+  font-family: var(--font-manrope), sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.packageName {
+  font-size: 0.85rem;
+  font-weight: 800;
+  margin: 0.5rem 0;
+}
+
+.packageDetail {
+  font-size: 0.75rem;
+  color: rgba(240, 238, 232, 0.5);
+  line-height: 1.5;
+}
+
+.error {
+  color: #ff79a8;
+  font-size: 0.85rem;
+  margin-top: 1rem;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btnBack {
+  flex: 1;
+  padding: 0.9rem 1.2rem;
+  min-height: 48px;
+  background: transparent;
+  border: 1px solid rgba(240, 238, 232, 0.1);
+  border-radius: 100px;
+  color: rgba(240, 238, 232, 0.6);
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.btnPrimary {
+  flex: 2;
+  padding: 0.9rem 1.2rem;
+  min-height: 48px;
+  background: linear-gradient(135deg, #ff2d78, #c026d3);
+  border: none;
+  border-radius: 100px;
+  color: white;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.btnPrimary:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+@media (max-width: 540px) {
+  .shell {
+    padding: 1.5rem 1rem;
+    padding-top: max(1.5rem, env(safe-area-inset-top));
+  }
+
+  .packageGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .packageCardFeatured {
+    margin-top: 0.5rem;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .btnBack,
+  .btnPrimary {
+    flex: none;
+    width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .packagePrice {
+    font-size: 1.5rem;
+  }
+}
