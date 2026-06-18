@@ -214,10 +214,25 @@ nav {
 .play-btn {
   width: 38px; height: 38px;
   background: linear-gradient(135deg, var(--pink), var(--amber));
+  border: none;
   border-radius: 50%; display: flex; align-items: center; justify-content: center;
   cursor: pointer; transition: all 0.2s; font-size: 0.85rem; padding-left: 2px;
+  color: white; flex-shrink: 0;
 }
 .play-btn:hover { transform: scale(1.1); box-shadow: 0 4px 16px rgba(255,45,120,0.5); }
+.play-btn--active { box-shadow: 0 4px 16px rgba(255,45,120,0.5); }
+.play-btn-pause {
+  display: flex; gap: 3px; align-items: center; justify-content: center;
+  padding-left: 0;
+}
+.play-btn-pause span {
+  width: 3px; height: 12px; background: white; border-radius: 1px;
+}
+
+.waveform--playing .wbar {
+  animation-duration: 0.55s !important;
+  opacity: 0.95;
+}
 
 .price-chips { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
 .price-chip {

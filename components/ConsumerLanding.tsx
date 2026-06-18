@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import LandingClient from './LandingClient'
+import SongPreviewPlayer from './SongPreviewPlayer'
 import { Logo } from './Logo'
 
 export default function ConsumerLanding() {
@@ -87,11 +88,11 @@ export default function ConsumerLanding() {
             <div className="song-preview">
               <div className="song-for">🎂 30th Birthday · For Mia</div>
               <div className="song-name">Thirty Looks Good on You</div>
-              <div className="song-detail">Inspired by Taylor Swift · 2:54</div>
+              <div className="song-detail">Inspired by Taylor Swift · 2:54 · tap ▶ for demo</div>
               <div className="waveform" id="wf1" />
               <div className="song-footer">
                 <span className="song-style-tag">🎵 Pop / Indie Folk</span>
-                <div className="play-btn">▶</div>
+                <SongPreviewPlayer />
               </div>
             </div>
             <div className="price-chips" id="priceChips">

@@ -105,11 +105,13 @@ export default function Questionnaire() {
       })
       const data = await res.json()
       if (!res.ok || !data.url) {
-        throw new Error(data.error ?? 'Checkout failed')
+        setError(data.error ?? 'Checkout failed. Please try again.')
+        setIsLoading(false)
+        return
       }
       window.location.href = data.url
     } catch {
-      setError('Something went wrong. Please try again.')
+      setError('Network error. Please check your connection and try again.')
       setIsLoading(false)
     }
   }
