@@ -1,4 +1,4 @@
-import { kv } from '@vercel/kv'
+import { kv } from '@/lib/kv'
 import { NextRequest, NextResponse } from 'next/server'
 import { getPendingOrder, processOrder } from '@/lib/process-order'
 import { stripe } from '@/lib/stripe'

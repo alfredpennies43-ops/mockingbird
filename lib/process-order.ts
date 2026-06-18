@@ -1,4 +1,4 @@
-import { kv } from '@vercel/kv'
+import { kv } from '@/lib/kv'
 import { generateLyricsAndPrompt } from './claude'
 import { generateSong } from './mureka'
 import { sendSongEmail } from './resend'

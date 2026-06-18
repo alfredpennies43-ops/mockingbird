@@ -58,6 +58,13 @@
   font-weight: 500;
 }
 
+.hint {
+  font-size: 0.8rem;
+  color: rgba(240, 238, 232, 0.45);
+  line-height: 1.55;
+  margin-bottom: 0.65rem;
+}
+
 .input,
 .select,
 .textarea {

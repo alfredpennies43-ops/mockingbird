@@ -1,4 +1,4 @@
-import { kv } from '@vercel/kv'
+import { kv } from '@/lib/kv'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Logo } from '@/components/Logo'

@@ -172,6 +172,10 @@ export default function Questionnaire() {
                 onChange={(e) => update({ recipientName: e.target.value })}
               />
               <label className={styles.label}>What makes them special?</label>
+              <p className={styles.hint}>
+                The more detail you share — memories, stories, inside jokes — the richer the lyrics
+                will be. We can only work with what you give us.
+              </p>
               <textarea
                 required
                 rows={5}
