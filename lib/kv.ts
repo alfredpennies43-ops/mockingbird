@@ -92,16 +92,16 @@ function getRestClient() {
 }
 
 function getStore(): KvStore {
+  if (process.env.REDIS_URL) {
+    return createRedisStore()
+  }
+
   if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
     return getRestStore()
   }
 
   if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
     return getRestStore()
-  }
-
-  if (process.env.REDIS_URL) {
-    return createRedisStore()
   }
 
   throw new Error(
