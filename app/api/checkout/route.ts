@@ -1,3 +1,4 @@
+import { getAppUrl } from '@/lib/app-url'
 import { isKvConfigured } from '@/lib/kv'
 import { NextRequest, NextResponse } from 'next/server'
 import { storePendingOrder } from '@/lib/process-order'
@@ -63,6 +64,8 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    const appUrl = getAppUrl()
+
     const orderRef = crypto.randomUUID()
     await storePendingOrder(orderRef, questionnaireData)
 
@@ -70,8 +73,8 @@ export async function POST(req: NextRequest) {
       mode: 'payment',
       line_items: [{ price: priceId, quantity: 1 }],
       customer_email: questionnaireData.customerEmail,
-      success_url: `${process.env.NEXT_PUBLIC_URL}/create?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_URL}/create`,
+      success_url: `${appUrl}/create?success=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${appUrl}/create`,
       metadata: { orderRef },
       payment_intent_data: {
         metadata: { orderRef },

@@ -1,3 +1,4 @@
+import { getAppUrl } from './app-url'
 import { kv } from '@/lib/kv'
 import { generateLyricsAndPrompt } from './claude'
 import { generateSong } from './mureka'
@@ -46,7 +47,7 @@ export async function processOrder(
     await kv.set(`song:${songPageId}`, songPage)
     await kv.set(`order:${orderId}`, { ...order, status: 'complete', songUrls })
 
-    const songPageUrl = `${process.env.NEXT_PUBLIC_URL}/song/${songPageId}`
+    const songPageUrl = `${getAppUrl()}/song/${songPageId}`
     await sendSongEmail({
       customerEmail: questionnaireData.customerEmail,
       recipientName: questionnaireData.recipientName,
