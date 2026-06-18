@@ -10,6 +10,11 @@ export async function GET() {
   return NextResponse.json({
     ok: true,
     database: isKvConfigured(),
+    databaseMode: process.env.KV_REST_API_URL
+      ? 'rest'
+      : process.env.REDIS_URL
+        ? 'redis-url'
+        : 'none',
     stripeSecretKey: Boolean(process.env.STRIPE_SECRET_KEY),
     stripeWebhookSecret: Boolean(process.env.STRIPE_WEBHOOK_SECRET),
     appUrl: getAppUrl(),
