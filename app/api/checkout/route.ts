@@ -5,27 +5,45 @@ import { storePendingOrder } from '@/lib/process-order'
 import { stripe } from '@/lib/stripe'
 import { QuestionnaireData } from '@/lib/types'
 
-function checkoutErrorMessage(error: unknown): string {
-  if (!(error instanceof Error)) {
-    return 'Failed to create checkout session'
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message
   }
+
+  if (typeof error === 'object' && error !== null && 'message' in error) {
+    return String((error as { message: unknown }).message)
+  }
+
+  return String(error)
+}
+
+function checkoutErrorMessage(error: unknown, step: 'database' | 'stripe'): string {
+  const message = getErrorMessage(error)
 
   if (
-    error.message.includes('KV_REST_API_URL') ||
-    error.message.includes('KV_REST_API_TOKEN')
+    message.includes('KV_REST_API_URL') ||
+    message.includes('KV_REST_API_TOKEN') ||
+    message.includes('WRONGPASS') ||
+    message.includes('invalid token')
   ) {
-    return 'Database not connected. In Vercel go to Storage, connect Upstash Redis to this project, then redeploy.'
+    return 'Database connection failed. Check REDIS_URL is set for Production in Vercel, then redeploy.'
   }
 
-  if (error.message.includes('No such price')) {
+  if (message.includes('No such price')) {
     return 'Invalid Stripe price ID. Check NEXT_PUBLIC_STRIPE_PRICE_ONE_SONG / THREE_SONGS in Vercel, then redeploy.'
   }
 
-  if (error.message.includes('Invalid API Key')) {
+  if (message.includes('Invalid API Key')) {
     return 'Invalid Stripe secret key. Check STRIPE_SECRET_KEY in Vercel matches your Sandbox test key.'
   }
 
-  return error.message || 'Failed to create checkout session'
+  if (message.includes('Not a valid URL') || message.includes('success_url')) {
+    return 'App URL not configured. Set NEXT_PUBLIC_URL in Vercel to your site URL, then redeploy.'
+  }
+
+  return step === 'database'
+    ? `Database error: ${message}`
+    : `Stripe error: ${message}`
 }
 
 export async function POST(req: NextRequest) {
@@ -67,9 +85,17 @@ export async function POST(req: NextRequest) {
     const appUrl = getAppUrl()
 
     const orderRef = crypto.randomUUID()
-    await storePendingOrder(orderRef, questionnaireData)
 
-    const session = await stripe.checkout.sessions.create({
+    try {
+      await storePendingOrder(orderRef, questionnaireData)
+    } catch (error) {
+      console.error('Checkout database error:', error)
+      return NextResponse.json({ error: checkoutErrorMessage(error, 'database') }, { status: 500 })
+    }
+
+    let session
+    try {
+      session = await stripe.checkout.sessions.create({
       mode: 'payment',
       line_items: [{ price: priceId, quantity: 1 }],
       customer_email: questionnaireData.customerEmail,
@@ -80,10 +106,14 @@ export async function POST(req: NextRequest) {
         metadata: { orderRef },
       },
     })
+    } catch (error) {
+      console.error('Checkout stripe error:', error)
+      return NextResponse.json({ error: checkoutErrorMessage(error, 'stripe') }, { status: 500 })
+    }
 
     return NextResponse.json({ url: session.url })
   } catch (error) {
     console.error('Checkout error:', error)
-    return NextResponse.json({ error: checkoutErrorMessage(error) }, { status: 500 })
+    return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 })
   }
 }
