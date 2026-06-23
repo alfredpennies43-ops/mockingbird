@@ -25,6 +25,8 @@ export async function processOrder(
   await kv.set(`order:${orderId}`, order)
   await kv.del(`pending:${orderRef}`)
 
+  console.log(`Order ${orderId} started for ${questionnaireData.recipientName}`)
+
   try {
     const { lyrics, murekaPrompt } = await generateLyricsAndPrompt(questionnaireData)
 
@@ -48,15 +50,20 @@ export async function processOrder(
     await kv.set(`order:${orderId}`, { ...order, status: 'complete', songUrls })
 
     const songPageUrl = `${getAppUrl()}/song/${songPageId}`
-    await sendSongEmail({
-      customerEmail: questionnaireData.customerEmail,
-      recipientName: questionnaireData.recipientName,
-      occasion: questionnaireData.occasion,
-      songPageUrl,
-      songUrls,
-    })
-
     console.log(`Order ${orderId} complete — song page: ${songPageUrl}`)
+
+    try {
+      await sendSongEmail({
+        customerEmail: questionnaireData.customerEmail,
+        recipientName: questionnaireData.recipientName,
+        occasion: questionnaireData.occasion,
+        songPageUrl,
+        songUrls,
+      })
+      console.log(`Order ${orderId} email sent to ${questionnaireData.customerEmail}`)
+    } catch (emailError) {
+      console.error(`Order ${orderId} email failed (song is still live):`, emailError)
+    }
   } catch (error) {
     console.error(`Order ${orderId} failed:`, error)
     await kv.set(`order:${orderId}`, { ...order, status: 'failed' })
