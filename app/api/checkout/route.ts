@@ -1,4 +1,4 @@
-import { getAppUrl } from '@/lib/app-url'
+import { getAppUrl, getCanonicalSiteUrl } from '@/lib/app-url'
 import { isKvConfigured } from '@/lib/kv'
 import { NextRequest, NextResponse } from 'next/server'
 import { storePendingOrder } from '@/lib/process-order'
@@ -38,7 +38,7 @@ function checkoutErrorMessage(error: unknown, step: 'database' | 'stripe'): stri
   }
 
   if (message.includes('Not a valid URL') || message.includes('success_url')) {
-    return 'App URL not configured. Set NEXT_PUBLIC_URL in Vercel to your site URL, then redeploy.'
+    return `App URL not configured. Set SITE_URL to ${getCanonicalSiteUrl()} in Vercel, then redeploy.`
   }
 
   return step === 'database'

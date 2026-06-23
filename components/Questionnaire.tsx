@@ -90,6 +90,13 @@ export default function Questionnaire() {
 
   const handleSubmit = async (e?: FormEvent) => {
     e?.preventDefault()
+
+    // Enter in an input submits the form — advance steps instead of skipping to Stripe.
+    if (currentStep < 5) {
+      next()
+      return
+    }
+
     if (!formData.priceId || !formData.versions) return
 
     setIsLoading(true)

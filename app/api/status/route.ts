@@ -1,4 +1,4 @@
-import { getAppUrl, getAppUrlDebug } from '@/lib/app-url'
+import { getAppUrl, getAppUrlDebug, getCanonicalSiteUrl } from '@/lib/app-url'
 import { isKvConfigured } from '@/lib/kv'
 import { NextResponse } from 'next/server'
 import { PRICE_IDS } from '@/lib/pricing'
@@ -9,6 +9,7 @@ export async function GET() {
 
   return NextResponse.json({
     ok: true,
+    canonicalSiteUrl: getCanonicalSiteUrl(),
     database: isKvConfigured(),
     databaseMode: process.env.REDIS_URL
       ? 'redis-url'
