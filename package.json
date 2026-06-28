@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "songs:list": "node scripts/list-songs.mjs"
+    "songs:list": "node scripts/list-songs.mjs",
+    "resend:test": "node scripts/test-resend.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.104.1",

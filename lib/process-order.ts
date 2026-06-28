@@ -53,14 +53,14 @@ export async function processOrder(
     console.log(`Order ${orderId} complete — song page: ${songPageUrl}`)
 
     try {
-      await sendSongEmail({
+      const result = await sendSongEmail({
         customerEmail: questionnaireData.customerEmail,
         recipientName: questionnaireData.recipientName,
         occasion: questionnaireData.occasion,
         songPageUrl,
         songUrls,
       })
-      console.log(`Order ${orderId} email sent to ${questionnaireData.customerEmail}`)
+      console.log(`Order ${orderId} email sent to ${questionnaireData.customerEmail} (id: ${result.id})`)
     } catch (emailError) {
       console.error(`Order ${orderId} email failed (song is still live):`, emailError)
     }

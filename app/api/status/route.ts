@@ -1,3 +1,4 @@
+import { getResendStatus } from '@/lib/resend-config'
 import { getAppUrl, getAppUrlDebug, getCanonicalSiteUrl } from '@/lib/app-url'
 import { isKvConfigured } from '@/lib/kv'
 import { NextResponse } from 'next/server'
@@ -18,6 +19,9 @@ export async function GET() {
         : 'none',
     stripeSecretKey: Boolean(process.env.STRIPE_SECRET_KEY),
     stripeWebhookSecret: Boolean(process.env.STRIPE_WEBHOOK_SECRET),
+    anthropicApiKey: Boolean(process.env.ANTHROPIC_API_KEY),
+    murekaApiKey: Boolean(process.env.MUREKA_API_KEY),
+    resend: getResendStatus(),
     appUrl: getAppUrl(),
     urlSources: getAppUrlDebug(),
     priceOneSongConfigured: !priceOne.includes('REPLACE'),

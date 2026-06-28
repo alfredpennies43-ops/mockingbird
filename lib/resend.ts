@@ -1,18 +1,21 @@
 import { getLogoEmailHtml } from '@/components/Logo'
 import { Resend } from 'resend'
+import { getResendFromEmail, isResendConfigured } from './resend-config'
 
 function getResend() {
+  if (!process.env.RESEND_API_KEY) {
+    throw new Error('RESEND_API_KEY is not set')
+  }
   return new Resend(process.env.RESEND_API_KEY)
 }
 
-export async function sendSongEmail(params: {
-  customerEmail: string
+function buildSongEmailHtml(params: {
   recipientName: string
   occasion: string
   songPageUrl: string
   songUrls: string[]
-}): Promise<void> {
-  const { customerEmail, recipientName, occasion, songPageUrl, songUrls } = params
+}): string {
+  const { recipientName, occasion, songPageUrl, songUrls } = params
 
   const downloadLinks = songUrls
     .map(
@@ -23,11 +26,7 @@ export async function sendSongEmail(params: {
     )
     .join('')
 
-  await getResend().emails.send({
-    from: process.env.RESEND_FROM_EMAIL!,
-    to: customerEmail,
-    subject: `🎵 Your song for ${recipientName} is ready`,
-    html: `
+  return `
 <!DOCTYPE html>
 <html>
 <head>
@@ -75,6 +74,67 @@ export async function sendSongEmail(params: {
   </table>
 </body>
 </html>
+  `
+}
+
+export async function sendSongEmail(params: {
+  customerEmail: string
+  recipientName: string
+  occasion: string
+  songPageUrl: string
+  songUrls: string[]
+}): Promise<{ id: string }> {
+  if (!isResendConfigured()) {
+    throw new Error('Resend is not configured. Set RESEND_API_KEY and RESEND_FROM_EMAIL in Vercel.')
+  }
+
+  const from = getResendFromEmail()!
+  const { customerEmail, recipientName, occasion, songPageUrl, songUrls } = params
+
+  const { data, error } = await getResend().emails.send({
+    from,
+    to: customerEmail,
+    subject: `🎵 Your song for ${recipientName} is ready`,
+    html: buildSongEmailHtml({ recipientName, occasion, songPageUrl, songUrls }),
+  })
+
+  if (error) {
+    throw new Error(`Resend error: ${error.message}`)
+  }
+
+  if (!data?.id) {
+    throw new Error('Resend did not return an email id')
+  }
+
+  return { id: data.id }
+}
+
+export async function sendTestEmail(to: string): Promise<{ id: string }> {
+  if (!isResendConfigured()) {
+    throw new Error('Resend is not configured. Set RESEND_API_KEY and RESEND_FROM_EMAIL.')
+  }
+
+  const from = getResendFromEmail()!
+
+  const { data, error } = await getResend().emails.send({
+    from,
+    to,
+    subject: 'Mockingbird.ai — Resend test',
+    html: `
+      <div style="font-family:sans-serif;padding:24px;">
+        <h1>Mockingbird.ai email test ✅</h1>
+        <p>If you received this, Resend is wired up correctly.</p>
+      </div>
     `,
   })
+
+  if (error) {
+    throw new Error(`Resend error: ${error.message}`)
+  }
+
+  if (!data?.id) {
+    throw new Error('Resend did not return an email id')
+  }
+
+  return { id: data.id }
 }
