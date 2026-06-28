@@ -11,7 +11,7 @@ export async function generateLyricsAndPrompt(
   data: QuestionnaireData
 ): Promise<{ lyrics: string; murekaPrompt: string }> {
   const message = await getAnthropic().messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-4-6',
     max_tokens: 1500,
     system:
       'You are a professional songwriter. You write emotionally resonant, personalised song lyrics. You always respond with valid JSON only — no markdown, no preamble.',
