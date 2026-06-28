@@ -7,12 +7,31 @@ function getAnthropic() {
   })
 }
 
+function parseClaudeJson(text: string): { lyrics?: string; murekaPrompt?: string } {
+  let cleaned = text.trim()
+
+  const fenced = cleaned.match(/^```(?:json)?\s*\n?([\s\S]*?)\n?```$/i)
+  if (fenced) {
+    cleaned = fenced[1].trim()
+  } else if (cleaned.startsWith('```')) {
+    cleaned = cleaned.replace(/^```(?:json)?\s*\n?/i, '').replace(/\n?```\s*$/, '').trim()
+  }
+
+  const start = cleaned.indexOf('{')
+  const end = cleaned.lastIndexOf('}')
+  if (start !== -1 && end !== -1 && end > start) {
+    cleaned = cleaned.slice(start, end + 1)
+  }
+
+  return JSON.parse(cleaned) as { lyrics?: string; murekaPrompt?: string }
+}
+
 export async function generateLyricsAndPrompt(
   data: QuestionnaireData
 ): Promise<{ lyrics: string; murekaPrompt: string }> {
   const message = await getAnthropic().messages.create({
     model: 'claude-sonnet-4-6',
-    max_tokens: 1500,
+    max_tokens: 3000,
     system:
       'You are a professional songwriter. You write emotionally resonant, personalised song lyrics. You always respond with valid JSON only — no markdown, no preamble.',
     messages: [
@@ -37,10 +56,7 @@ Return JSON with two keys:
   }
 
   try {
-    const parsed = JSON.parse(textBlock.text) as {
-      lyrics?: string
-      murekaPrompt?: string
-    }
+    const parsed = parseClaudeJson(textBlock.text)
     if (!parsed.lyrics || !parsed.murekaPrompt) {
       throw new Error('Missing lyrics or murekaPrompt in Claude response')
     }
