@@ -28,12 +28,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={outfit.variable}>
-      <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap"
-          rel="stylesheet"
-        />
-      </head>
       <body className={outfit.className}>
         {children}
         <SpeedInsights />

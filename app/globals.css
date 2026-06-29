@@ -1,4 +1,4 @@
-@import "../public/lucidbloom/css/system.css";
+@import "./lucidbloom-system.css";
 @import "tailwindcss";
 
 *,
