@@ -112,7 +112,7 @@ export default function ConsumerLanding() {
           <div className="hero-visual" id="demo-preview">
             <div className="hero-visual-main">
               <Image
-                src="/lucidbloom/images/face.png"
+                src="/lucidbloom/images/mushroom.png"
                 alt=""
                 fill
                 priority
@@ -124,7 +124,7 @@ export default function ConsumerLanding() {
               <Image src="/lucidbloom/images/eye.png" alt="" width={88} height={88} />
             </div>
             <div className="hero-float hero-float--mushroom">
-              <Image src="/lucidbloom/images/mushroom.png" alt="" width={72} height={72} />
+              <Image src="/lucidbloom/images/face.png" alt="" width={72} height={72} />
             </div>
 
             <div className="consumer-card consumer-card--glow">
