@@ -29,12 +29,12 @@ function checkoutErrorMessage(error: unknown, step: 'database' | 'stripe'): stri
     return 'Database connection failed. Check REDIS_URL is set for Production in Vercel, then redeploy.'
   }
 
-  if (message.includes('No such price')) {
-    return 'Invalid Stripe price ID. Check NEXT_PUBLIC_STRIPE_PRICE_ONE_SONG in Vercel, then redeploy.'
+  if (message.includes('Invalid API Key')) {
+    return 'Invalid Stripe secret key. Check STRIPE_SECRET_KEY in Vercel matches your live secret key (sk_live_...).'
   }
 
-  if (message.includes('Invalid API Key')) {
-    return 'Invalid Stripe secret key. Check STRIPE_SECRET_KEY in Vercel matches your Sandbox test key.'
+  if (message.includes('No such price')) {
+    return 'Invalid Stripe price ID. Check NEXT_PUBLIC_STRIPE_PRICE_ONE_SONG is your live $19 price in Vercel, then redeploy.'
   }
 
   if (message.includes('Not a valid URL') || message.includes('success_url')) {

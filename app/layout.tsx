@@ -11,9 +11,14 @@ const outfit = Outfit({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://mockingbird.ai'),
   title: 'Mockingbird.ai — The Gift That Hits Different',
   description:
     'AI-powered personalised songs for birthdays, weddings, proposals and more. Delivered in 15 minutes.',
+  openGraph: {
+    url: 'https://mockingbird.ai',
+    siteName: 'Mockingbird.ai',
+  },
 }
 
 export default function RootLayout({

@@ -1,4 +1,4 @@
-const DEFAULT_PRODUCTION_URL = 'https://mockingbird-umber-alpha.vercel.app'
+const DEFAULT_PRODUCTION_URL = 'https://mockingbird.ai'
 
 export function getCanonicalSiteUrl(): string {
   return DEFAULT_PRODUCTION_URL

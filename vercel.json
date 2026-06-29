@@ -1,4 +1,12 @@
 {
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.mockingbird.ai" }],
+      "destination": "https://mockingbird.ai/:path*",
+      "permanent": true
+    }
+  ],
   "functions": {
     "app/api/webhook/route.ts": {
       "maxDuration": 300

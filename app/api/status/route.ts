@@ -1,14 +1,17 @@
 import { getResendStatus } from '@/lib/resend-config'
 import { getAppUrl, getAppUrlDebug, getCanonicalSiteUrl } from '@/lib/app-url'
 import { isKvConfigured } from '@/lib/kv'
+import { getProductionReadiness } from '@/lib/production'
 import { NextResponse } from 'next/server'
 import { PRICE_IDS } from '@/lib/pricing'
 
 export async function GET() {
   const priceOne = PRICE_IDS.ONE_SONG
+  const production = getProductionReadiness()
 
   return NextResponse.json({
     ok: true,
+    production,
     canonicalSiteUrl: getCanonicalSiteUrl(),
     database: isKvConfigured(),
     databaseMode: process.env.REDIS_URL
