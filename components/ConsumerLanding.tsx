@@ -2,12 +2,51 @@ import Image from 'next/image'
 import Link from 'next/link'
 import LandingClient from './LandingClient'
 import SongPreviewPlayer from './SongPreviewPlayer'
+import StickyCta from './StickyCta'
 import { Logo } from './Logo'
+
+const DELIVERABLES = [
+  {
+    emoji: '✍️',
+    title: 'Lyrics with their name',
+    body: 'Written from your memories — inside jokes, milestones, and the details only you would know.',
+  },
+  {
+    emoji: '🎵',
+    title: 'Studio-quality MP3',
+    body: 'A full song in the style you choose — pop, folk, R&B, rock, or any artist vibe you name.',
+  },
+  {
+    emoji: '🔗',
+    title: 'Shareable song page',
+    body: 'A private link to play at the party, send in a text, or keep forever. Delivered to your inbox.',
+  },
+]
+
+const FAQ = [
+  {
+    q: 'How long does it take?',
+    a: 'Most songs arrive within 15 minutes of payment. You’ll get an email with a link to play and download the MP3.',
+  },
+  {
+    q: 'What if they don’t like it?',
+    a: 'We want genuine reactions — if something’s wrong with your order, email hello@mockingbird.ai and we’ll make it right.',
+  },
+  {
+    q: 'Is my story private?',
+    a: 'Yes. Your answers are only used to write your song. We don’t share or sell your personal details.',
+  },
+  {
+    q: 'Can I pick the music style?',
+    a: 'Absolutely. Name an artist or describe a vibe — “ acoustic Taylor Swift ”, “ 90s R&B ”, “ upbeat disco ” — and we match the feel.',
+  },
+]
 
 export default function ConsumerLanding() {
   return (
     <>
       <LandingClient />
+      <StickyCta />
 
       <nav>
         <Logo href="/" size="md" className="logo" />
@@ -18,13 +57,13 @@ export default function ConsumerLanding() {
             </a>
           </li>
           <li>
-            <a href="#occasions" className="nav-link">
-              Occasions
+            <a href="#faq" className="nav-link">
+              FAQ
             </a>
           </li>
           <li>
             <Link href="/create" className="btn-nav">
-              Create a Song
+              Create a Song — $19
             </Link>
           </li>
         </ul>
@@ -34,37 +73,43 @@ export default function ConsumerLanding() {
         <div className="hero-bloom" aria-hidden="true" />
 
         <div className="consumer-inner">
-          <div>
-            <p className="hero-overline">Personalised AI songs</p>
+          <div className="hero-copy">
+            <p className="hero-overline">Personalised AI songs · Delivered in minutes</p>
             <h1 className="consumer-title">
-              The gift that
+              Turn their story into
               <br />
-              <span className="pop">hits different.</span>
+              <span className="pop">a song they&apos;ll never forget.</span>
             </h1>
             <p className="consumer-sub">
-              A one-of-a-kind song in your inbox in 15 minutes — $19, no subscriptions.
+              Answer four quick questions. We write the lyrics, compose the track, and email you a
+              shareable song page — usually within <strong>15 minutes</strong>. One price:{' '}
+              <strong>$19</strong>.
             </p>
             <div className="consumer-actions">
-              <Link href="/create" className="btn-primary">
-                Create a Song →
+              <Link href="/create" className="btn-primary btn-primary--pulse">
+                Create My Song — $19 →
               </Link>
-              <a href="#consumer-how" className="btn-ghost">
-                See How It Works
+              <a href="#demo-preview" className="btn-ghost">
+                Hear a demo ▶
               </a>
             </div>
+            <ul className="hero-trust">
+              <li>⏱ ~15 min delivery</li>
+              <li>🔒 Secure Stripe checkout</li>
+              <li>🎁 MP3 + share link</li>
+            </ul>
             <div className="occasion-pills">
-              <span className="pill">🎂 Birthdays</span>
-              <span className="pill">💍 Proposals</span>
-              <span className="pill">💒 Weddings</span>
-              <span className="pill">👶 New Baby</span>
-              <span className="pill">🎓 Graduations</span>
-              <span className="pill">💔 Breakups</span>
-              <span className="pill">🥳 Just Because</span>
-              <span className="pill">👴 Retirements</span>
+              {['🎂 Birthdays', '💍 Proposals', '💒 Weddings', '👶 New Baby', '🎓 Graduations', '🥳 Just Because'].map(
+                (pill) => (
+                  <Link key={pill} href="/create" className="pill pill--link">
+                    {pill}
+                  </Link>
+                )
+              )}
             </div>
           </div>
 
-          <div className="hero-visual">
+          <div className="hero-visual" id="demo-preview">
             <div className="hero-visual-main">
               <Image
                 src="/lucidbloom/images/face.png"
@@ -82,12 +127,13 @@ export default function ConsumerLanding() {
               <Image src="/lucidbloom/images/mushroom.png" alt="" width={72} height={72} />
             </div>
 
-            <div className="consumer-card">
-              <div className="card-top-label">Song Preview — Mia&apos;s 30th Birthday</div>
+            <div className="consumer-card consumer-card--glow">
+              <span className="live-badge">● Live demo</span>
+              <div className="card-top-label">Sample — Mia&apos;s 30th Birthday</div>
               <div className="song-preview">
                 <div className="song-for">🎂 30th Birthday · For Mia</div>
                 <div className="song-name">Thirty Looks Good on You</div>
-                <div className="song-detail">Inspired by Taylor Swift · 2:54 · tap ▶ for demo</div>
+                <div className="song-detail">Inspired by Taylor Swift · 2:54 · tap ▶ to listen</div>
                 <div className="waveform" id="wf1" />
                 <div className="song-footer">
                   <span className="song-style-tag">🎵 Pop / Indie Folk</span>
@@ -96,11 +142,12 @@ export default function ConsumerLanding() {
               </div>
               <div className="price-single">
                 <div className="price-single-amount">$19</div>
-                <div className="price-single-label">One personalised song · MP3 · ~15 min delivery</div>
+                <div className="price-single-label">Everything included · No subscription</div>
               </div>
               <Link href="/create" className="card-cta">
-                Create My Song for $19 →
+                Start My Song — takes 3 min →
               </Link>
+              <p className="card-microcopy">4 questions before checkout · Pay only when you&apos;re ready</p>
             </div>
           </div>
         </div>
@@ -109,31 +156,52 @@ export default function ConsumerLanding() {
       <div className="consumer-proof">
         <div className="proof-item">
           <div className="proof-num">15 min</div>
-          <div className="proof-label">Average delivery time</div>
+          <div className="proof-label">Average delivery</div>
         </div>
         <div className="proof-sep" />
         <div className="proof-item">
           <div className="proof-num">$19</div>
-          <div className="proof-label">One song, all in</div>
+          <div className="proof-label">Flat price, all in</div>
         </div>
         <div className="proof-sep" />
         <div className="proof-item">
-          <div className="proof-num">4.9 ★</div>
-          <div className="proof-label">Average rating</div>
+          <div className="proof-num">4</div>
+          <div className="proof-label">Questions to start</div>
         </div>
         <div className="proof-sep" />
         <div className="proof-item">
           <div className="proof-num">100%</div>
-          <div className="proof-label">Satisfaction guarantee</div>
+          <div className="proof-label">Original lyrics</div>
         </div>
       </div>
+
+      <section className="deliverables-section">
+        <div className="deliverables-inner reveal">
+          <h2 className="section-title">
+            What you get for
+            <br />
+            <em>$19.</em>
+          </h2>
+          <div className="deliverables-grid">
+            {DELIVERABLES.map((item) => (
+              <div key={item.title} className="deliverable-card">
+                <span className="deliverable-emoji">{item.emoji}</span>
+                <h3 className="deliverable-title">{item.title}</h3>
+                <p className="deliverable-body">{item.body}</p>
+              </div>
+            ))}
+          </div>
+          <Link href="/create" className="btn-primary deliverables-cta">
+            Create My Song →
+          </Link>
+        </div>
+      </section>
 
       <div className="ticker">
         <div className="ticker-track" aria-hidden="true">
           {[
             '🎂 Birthdays', '💒 Weddings', '💍 Proposals', '💑 Anniversaries', '👶 New Baby',
             '🎓 Graduations', '🌅 Retirements', '💔 Breakups', '🥳 Just Because', '✈️ Farewells',
-            '🏆 Promotions', '🏠 New Home', '🎄 Christmas', '💐 Mother\'s Day',
           ].flatMap((item) => [item, item]).map((item, i) => {
             const [emoji, ...rest] = item.split(' ')
             return (
@@ -155,10 +223,10 @@ export default function ConsumerLanding() {
           </h2>
           <div className="c-steps reveal">
             {[
-              { num: '01', emoji: '✍️', title: 'Tell us their story', body: 'Answer a few questions — their name, the occasion, a memory or two, and what makes them special. The more detail, the better the song.' },
-              { num: '02', emoji: '🎨', title: 'Pick a style', body: "Name an artist you love or pick a vibe — indie folk, pop, R&B, classic rock. We'll capture the feeling, not just the sound." },
-              { num: '03', emoji: '💳', title: 'Pay $19 and wait', body: "We'll compose your song and deliver it straight to your inbox — usually within 15 minutes." },
-              { num: '04', emoji: '🎁', title: 'Watch their reaction', body: 'Send the song link, play it at the party, or drop the MP3 in a voice message. Prepare for the kind of reaction gift cards never get.' },
+              { num: '01', emoji: '✍️', title: 'Tell us their story', body: 'Their name, the occasion, and what makes them special. The richer the detail, the better the lyrics.' },
+              { num: '02', emoji: '🎨', title: 'Pick a style', body: 'Name an artist or vibe. We capture the feeling — not a copy, but the mood you’re going for.' },
+              { num: '03', emoji: '💳', title: 'Pay $19 once', body: 'Secure checkout. No subscription, no upsells. Then we compose your song — usually within 15 minutes.' },
+              { num: '04', emoji: '🎁', title: 'Send the link', body: 'Play it at the party, text the MP3, or watch their face when they hear their name in the chorus.' },
             ].map((step) => (
               <div key={step.num} className="c-step">
                 <div className="c-step-num">Step {step.num}</div>
@@ -170,6 +238,45 @@ export default function ConsumerLanding() {
           </div>
         </div>
       </div>
+
+      <section className="compare-section reveal">
+        <div className="compare-inner">
+          <h2 className="section-title">
+            Better than a card.
+            <br />
+            <em>Cheaper than flowers.</em>
+          </h2>
+          <div className="compare-grid">
+            <div className="compare-card compare-card--muted">
+              <div className="compare-label">Generic gift card</div>
+              <ul>
+                <li className="compare-no">Forgotten in a drawer</li>
+                <li className="compare-no">Zero emotional impact</li>
+                <li className="compare-no">Says “I had to get something”</li>
+              </ul>
+            </div>
+            <div className="compare-card compare-card--hero">
+              <div className="compare-label">Mockingbird song</div>
+              <ul>
+                <li className="compare-yes">Their name in the lyrics</li>
+                <li className="compare-yes">Playable, shareable, forever</li>
+                <li className="compare-yes">$19 · Ready in ~15 min</li>
+              </ul>
+              <Link href="/create" className="btn-primary compare-cta">
+                Create My Song →
+              </Link>
+            </div>
+            <div className="compare-card compare-card--muted">
+              <div className="compare-label">Custom musician</div>
+              <ul>
+                <li className="compare-no">$500+ and weeks of waiting</li>
+                <li className="compare-no">Hard to book last-minute</li>
+                <li className="compare-no">Overkill for most occasions</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <div className="occasions-section" id="occasions">
         <div className="occasions-inner">
@@ -193,35 +300,44 @@ export default function ConsumerLanding() {
           </div>
           <div className="occasions-grid reveal">
             {[
-              { emoji: '🎂', title: 'Birthdays', desc: "Milestone or everyday — a song with their name, their story, and their favourite artist's vibe hits harder than any card." },
-              { emoji: '💍', title: 'Proposals & Weddings', desc: 'Commission a song for the moment, the ceremony, or the first dance. Completely original. Completely yours.' },
-              { emoji: '👶', title: 'New Baby', desc: "A lullaby with their name in it. A song about the day they arrived. A gift for the parents they'll keep forever." },
-              { emoji: '🎓', title: 'Graduations', desc: 'Celebrate the years, the late nights, the achievement. A personalised anthem for the next chapter.' },
-              { emoji: '💑', title: 'Anniversaries', desc: "The story of how you met, where you've been, what they mean to you — set to music, delivered in minutes." },
-              { emoji: '🥳', title: 'Just Because', desc: 'No occasion needed. Sometimes the best gifts are the ones nobody saw coming. A song for a random Tuesday hits different.' },
+              { emoji: '🎂', title: 'Birthdays', desc: "Their name, their story, their artist's vibe — hits harder than any card." },
+              { emoji: '💍', title: 'Proposals & Weddings', desc: 'Original music for the moment, the ceremony, or the first dance.' },
+              { emoji: '👶', title: 'New Baby', desc: "A lullaby with their name. A gift parents keep forever." },
+              { emoji: '🎓', title: 'Graduations', desc: 'A personalised anthem for the next chapter.' },
+              { emoji: '💑', title: 'Anniversaries', desc: 'Your story set to music — delivered in minutes.' },
+              { emoji: '🥳', title: 'Just Because', desc: 'The best gifts are the ones nobody saw coming.' },
             ].map((o) => (
-              <div key={o.title} className="occasion-card">
+              <Link key={o.title} href="/create" className="occasion-card occasion-card--link">
                 <span className="occasion-emoji">{o.emoji}</span>
                 <div className="occasion-title">{o.title}</div>
                 <p className="occasion-desc">{o.desc}</p>
-              </div>
+                <span className="occasion-cta">Create a song →</span>
+              </Link>
             ))}
           </div>
         </div>
       </div>
 
       <div className="c-testimonials">
-        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <h2 className="section-title reveal">
-            Songs that made them
+        <div className="testimonials-wrap">
+          <div className="featured-testi reveal">
+            <div className="featured-testi-stars">★★★★★</div>
+            <p className="featured-testi-text">
+              &ldquo;Played it at my mum&apos;s 60th and the whole room went silent. She cried. I cried.
+              My dad cried and he hasn&apos;t cried since 1987.&rdquo;
+            </p>
+            <p className="featured-testi-author">— Sarah M., Brisbane · Birthday song</p>
+          </div>
+
+          <h2 className="section-title reveal section-title--center">
+            Real reactions.
             <br />
-            <em>actually cry.</em>
+            <em>Real songs.</em>
           </h2>
           <div className="c-testi-grid reveal">
             {[
-              { text: '"Played it at my mum\'s 60th and the whole room went silent. She cried. I cried. My dad cried and he hasn\'t cried since 1987."', author: '— Sarah M., Brisbane' },
-              { text: '"Used it for a proposal. She said yes. I\'m crediting Mockingbird in the wedding speech and I am not joking."', author: '— Tom R., Sydney' },
-              { text: '"The Taylor Swift vibe was spot on and the lyrics mentioned things only her best friends would know. I don\'t know how it works but it works."', author: '— James K., London' },
+              { text: '"Used it for a proposal. She said yes. I\'m crediting Mockingbird in the wedding speech."', author: '— Tom R., Sydney' },
+              { text: '"The Taylor Swift vibe was spot on and the lyrics mentioned things only her best friends would know."', author: '— James K., London' },
             ].map((t) => (
               <div key={t.author} className="c-testi">
                 <div className="c-testi-stars">★★★★★</div>
@@ -233,6 +349,28 @@ export default function ConsumerLanding() {
         </div>
       </div>
 
+      <section className="faq-section" id="faq">
+        <div className="faq-inner reveal">
+          <h2 className="section-title">
+            Questions
+            <br />
+            <em>before you buy.</em>
+          </h2>
+          <div className="faq-list">
+            {FAQ.map((item) => (
+              <details key={item.q} className="faq-item">
+                <summary className="faq-question">{item.q}</summary>
+                <p className="faq-answer">{item.a}</p>
+              </details>
+            ))}
+          </div>
+          <p className="faq-footer">
+            Still unsure?{' '}
+            <a href="mailto:hello@mockingbird.ai">hello@mockingbird.ai</a> — we reply fast.
+          </p>
+        </div>
+      </section>
+
       <section className="footer-cta">
         <div className="footer-cta-glow" />
         <Image
@@ -243,13 +381,14 @@ export default function ConsumerLanding() {
           className="footer-cta-art"
         />
         <h2 className="footer-cta-title">
-          Give them something
+          They&apos;ll remember this
           <br />
-          they&apos;ll <em>actually remember.</em>
+          <em>long after the cake.</em>
         </h2>
+        <p className="footer-cta-sub">Four questions · $19 · In your inbox in ~15 minutes</p>
         <div className="footer-cta-btns">
-          <Link href="/create" className="btn-primary">
-            Create a Song — $19
+          <Link href="/create" className="btn-primary btn-primary--pulse">
+            Create My Song — $19 →
           </Link>
         </div>
       </section>
