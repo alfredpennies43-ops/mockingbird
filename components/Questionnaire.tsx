@@ -1,6 +1,5 @@
 'use client'
 
-import { useSearchParams } from 'next/navigation'
 import { Logo } from './Logo'
 import { FormEvent, useState } from 'react'
 import { PRICE_IDS } from '@/lib/pricing'
@@ -20,10 +19,9 @@ const OCCASIONS = [
   'Other',
 ]
 
-export default function Questionnaire() {
-  const searchParams = useSearchParams()
-  const initialPackage = searchParams.get('package') === '3' ? 3 : 1
+const TOTAL_STEPS = 4
 
+export default function Questionnaire() {
   const [currentStep, setCurrentStep] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
@@ -34,8 +32,8 @@ export default function Questionnaire() {
     memories: '',
     artistStyle: '',
     customerEmail: '',
-    versions: initialPackage as 1 | 3,
-    priceId: initialPackage === 3 ? PRICE_IDS.THREE_SONGS : PRICE_IDS.ONE_SONG,
+    versions: 1,
+    priceId: PRICE_IDS.ONE_SONG,
   })
 
   const update = (fields: Partial<QuestionnaireData>) => {
@@ -76,38 +74,36 @@ export default function Questionnaire() {
 
   const next = () => {
     if (!validateStep()) return
-    setCurrentStep((s) => Math.min(s + 1, 5))
+    setCurrentStep((s) => Math.min(s + 1, TOTAL_STEPS))
   }
 
   const back = () => setCurrentStep((s) => Math.max(s - 1, 1))
 
-  const selectPackage = (versions: 1 | 3) => {
-    update({
-      versions,
-      priceId: versions === 3 ? PRICE_IDS.THREE_SONGS : PRICE_IDS.ONE_SONG,
-    })
-  }
-
   const handleSubmit = async (e?: FormEvent) => {
     e?.preventDefault()
 
-    // Enter in an input submits the form — advance steps instead of skipping to Stripe.
-    if (currentStep < 5) {
+    if (currentStep < TOTAL_STEPS) {
       next()
       return
     }
 
-    if (!formData.priceId || !formData.versions) return
+    if (!validateStep()) return
 
     setIsLoading(true)
     setError('')
     try {
+      const questionnaireData: QuestionnaireData = {
+        ...(formData as QuestionnaireData),
+        versions: 1,
+        priceId: PRICE_IDS.ONE_SONG,
+      }
+
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          priceId: formData.priceId,
-          questionnaireData: formData as QuestionnaireData,
+          priceId: PRICE_IDS.ONE_SONG,
+          questionnaireData,
         }),
       })
       const data = await res.json()
@@ -125,13 +121,14 @@ export default function Questionnaire() {
 
   return (
     <div className={styles.shell}>
+      <div className={styles.bloom} aria-hidden="true" />
       <div className={styles.inner}>
         <div className={styles.logoWrap}>
           <Logo href="/" size="sm" />
         </div>
 
         <div className={styles.progress}>
-          {[1, 2, 3, 4, 5].map((step) => (
+          {Array.from({ length: TOTAL_STEPS }, (_, i) => i + 1).map((step) => (
             <div
               key={step}
               className={`${styles.progressStep} ${
@@ -213,52 +210,23 @@ export default function Questionnaire() {
 
           {currentStep === 4 && (
             <div>
-              <h1 className={styles.title}>Your details</h1>
+              <h1 className={styles.title}>Almost there</h1>
               <label className={styles.label}>Your email</label>
               <input
                 type="email"
                 required
-                className={styles.input}
+                className={`${styles.input} ${styles.inputMb}`}
                 placeholder="you@example.com"
                 autoComplete="email"
                 inputMode="email"
                 value={formData.customerEmail}
                 onChange={(e) => update({ customerEmail: e.target.value })}
               />
-            </div>
-          )}
-
-          {currentStep === 5 && (
-            <div>
-              <h1 className={styles.title}>Choose your package</h1>
-              <div className={styles.packageGrid}>
-                <button
-                  type="button"
-                  onClick={() => selectPackage(1)}
-                  className={`${styles.packageCard} ${
-                    formData.versions === 1 ? styles.packageCardSelected : styles.packageCardDefault
-                  }`}
-                >
-                  <div className={styles.packagePrice}>$19</div>
-                  <div className={styles.packageName}>1 Song Version</div>
-                  <div className={styles.packageDetail}>
-                    Personalised lyrics · MP3 · ~15 min delivery
-                  </div>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => selectPackage(3)}
-                  className={`${styles.packageCard} ${styles.packageCardFeatured} ${
-                    formData.versions === 3 ? styles.packageCardSelected : styles.packageCardDefault
-                  }`}
-                >
-                  <span className={styles.packageBadge}>Most Popular</span>
-                  <div className={styles.packagePrice}>$29</div>
-                  <div className={styles.packageName}>3 Song Versions</div>
-                  <div className={styles.packageDetail}>
-                    3 unique interpretations · MP3 · ~15 min delivery
-                  </div>
-                </button>
+              <div className={styles.priceSummary}>
+                <div className={styles.priceAmount}>$19</div>
+                <div className={styles.priceDetail}>
+                  One personalised song · MP3 · delivered in ~15 minutes
+                </div>
               </div>
             </div>
           )}
@@ -271,13 +239,13 @@ export default function Questionnaire() {
                 Back
               </button>
             )}
-            {currentStep < 5 ? (
+            {currentStep < TOTAL_STEPS ? (
               <button type="button" onClick={next} className={styles.btnPrimary}>
                 Next →
               </button>
             ) : (
               <button type="submit" disabled={isLoading} className={styles.btnPrimary}>
-                {isLoading ? 'Redirecting to checkout...' : 'Create My Song →'}
+                {isLoading ? 'Redirecting to checkout...' : 'Create My Song — $19 →'}
               </button>
             )}
           </div>

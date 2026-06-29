@@ -1,3 +1,4 @@
+@import url("/lucidbloom/css/system.css");
 @import "tailwindcss";
 
 *,
@@ -11,4 +12,14 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--lb-void);
+  color: var(--lb-ink);
+  font-family: var(--lb-font-body);
 }

@@ -5,7 +5,7 @@ export interface QuestionnaireData {
   memories: string
   artistStyle: string
   customerEmail: string
-  versions: 1 | 3
+  versions: 1
   priceId: string
 }
 

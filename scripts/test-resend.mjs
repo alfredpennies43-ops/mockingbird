@@ -3,13 +3,13 @@ import { existsSync, readFileSync } from 'node:fs'
 const ENV_FILES = ['.env.local', '.env.development.local', '.env.production.local']
 
 function loadEnv(name) {
-  if (process.env[name]) return process.env[name]
+  if (process.env[name]?.trim()) return process.env[name].trim()
 
   for (const file of ENV_FILES) {
     if (!existsSync(file)) continue
     const env = readFileSync(file, 'utf8')
     const match = env.match(new RegExp(`^${name}=(.*)$`, 'm'))
-    if (match?.[1]) {
+    if (match?.[1] !== undefined) {
       let value = match[1].trim()
       if (
         (value.startsWith('"') && value.endsWith('"')) ||
@@ -17,7 +17,7 @@ function loadEnv(name) {
       ) {
         value = value.slice(1, -1)
       }
-      return value
+      if (value) return value
     }
   }
 
@@ -29,8 +29,19 @@ const from = loadEnv('RESEND_FROM_EMAIL')
 const to = process.argv[2] ?? loadEnv('RESEND_TEST_TO')
 
 if (!apiKey || !from) {
-  console.error('Missing RESEND_API_KEY or RESEND_FROM_EMAIL in .env.local')
-  console.error('Run: npx vercel env pull .env.local --environment=production')
+  console.error('Resend is not configured in .env.local.')
+  console.error('')
+  console.error('The variable names may exist but the VALUES are empty.')
+  console.error('Fix in Vercel → Settings → Environment Variables → Production:')
+  console.error('  RESEND_API_KEY=re_...')
+  console.error('  RESEND_FROM_EMAIL=onboarding@resend.dev')
+  console.error('')
+  console.error('Then either:')
+  console.error('  1. npx vercel env pull .env.local --environment=production --yes')
+  console.error('  2. Or paste the values directly into .env.local')
+  console.error('')
+  console.error('Or test inline without .env.local:')
+  console.error('  RESEND_API_KEY=re_xxx RESEND_FROM_EMAIL=onboarding@resend.dev npm run resend:test -- you@gmail.com')
   process.exit(1)
 }
 

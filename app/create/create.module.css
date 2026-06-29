@@ -1,0 +1,66 @@
+.loading,
+.successShell {
+  min-height: 100dvh;
+  background: var(--lb-void);
+}
+
+.successShell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: max(2rem, env(safe-area-inset-top)) max(1.2rem, env(safe-area-inset-right))
+    max(2rem, env(safe-area-inset-bottom)) max(1.2rem, env(safe-area-inset-left));
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.successBloom {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 20% 0%, rgba(126, 59, 255, 0.35) 0%, transparent 55%),
+    radial-gradient(80% 70% at 100% 100%, rgba(255, 43, 177, 0.25) 0%, transparent 60%);
+}
+
+.successInner {
+  position: relative;
+  z-index: 1;
+}
+
+.successEmoji {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.successTitle {
+  font-family: var(--lb-font-display), serif;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--lb-ink);
+  margin-bottom: 1rem;
+  line-height: 1.05;
+}
+
+.successCopy {
+  color: var(--lb-mist);
+  font-size: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.successBtn {
+  display: inline-block;
+  background: linear-gradient(135deg, #7e3bff 0%, #ff2bb1 55%, #ff8a2a 100%);
+  color: var(--lb-ink);
+  text-decoration: none;
+  padding: 0.9rem 2rem;
+  min-height: 48px;
+  line-height: 1.4;
+  border-radius: var(--lb-radius-full);
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 14px 36px -14px rgba(255, 43, 177, 0.55);
+}

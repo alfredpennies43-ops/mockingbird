@@ -30,7 +30,7 @@ function checkoutErrorMessage(error: unknown, step: 'database' | 'stripe'): stri
   }
 
   if (message.includes('No such price')) {
-    return 'Invalid Stripe price ID. Check NEXT_PUBLIC_STRIPE_PRICE_ONE_SONG / THREE_SONGS in Vercel, then redeploy.'
+    return 'Invalid Stripe price ID. Check NEXT_PUBLIC_STRIPE_PRICE_ONE_SONG in Vercel, then redeploy.'
   }
 
   if (message.includes('Invalid API Key')) {
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           error:
-            'Stripe price IDs are not configured in this build. Set NEXT_PUBLIC_STRIPE_PRICE_ONE_SONG and NEXT_PUBLIC_STRIPE_PRICE_THREE_SONGS in Vercel, then redeploy.',
+            'Stripe price IDs are not configured in this build. Set NEXT_PUBLIC_STRIPE_PRICE_ONE_SONG in Vercel, then redeploy.',
         },
         { status: 500 }
       )

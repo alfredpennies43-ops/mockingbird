@@ -1,0 +1,1273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lucidbloom — A psychedelic dispatch from the velvet broadcast</title>
+  <link rel="stylesheet" href="../css/system.css" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css" />
+  <style>
+    /* ---- Preview-only layout ---------------------------------------------- */
+    body { overflow-x: hidden; }
+
+    .page {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ---- Nav ------------------------------------------------------------- */
+    .lb-nav {
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
+    }
+    .lb-nav__brand-mark {
+      width: 2.25rem;
+      height: 2.25rem;
+      color: var(--lb-magenta);
+    }
+    .lb-nav__brand-mark svg { width: 100%; height: 100%; }
+    .nav-tag {
+      font-family: var(--lb-font-body);
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--lb-mist-2);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-left: 0.65rem;
+      padding: 0.25rem 0.55rem;
+      border: 1px solid rgba(165, 123, 255, 0.32);
+      border-radius: 999px;
+    }
+    .lb-nav__links a:hover { color: var(--lb-citrine); }
+
+    /* ---- Hero ----------------------------------------------------------- */
+    .hero {
+      position: relative;
+      padding-block: clamp(2.5rem, 7vw, 5.5rem) clamp(3rem, 8vw, 6rem);
+      isolation: isolate;
+    }
+    .hero__grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: clamp(2rem, 5vw, 4rem);
+      align-items: center;
+      position: relative;
+    }
+    @media (max-width: 960px) { .hero__grid { grid-template-columns: 1fr; } }
+
+    .hero__display {
+      font-family: var(--lb-font-display);
+      font-weight: 400;
+      font-size: clamp(3.5rem, 8.5vw, 6.5rem);
+      line-height: 0.92;
+      letter-spacing: -0.015em;
+      color: var(--lb-ink);
+      margin: 0 0 1.5rem 0;
+    }
+    .hero__lead {
+      font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+      color: var(--lb-mist);
+      line-height: 1.55;
+      max-width: 36rem;
+      margin: 0 0 2rem 0;
+    }
+    .hero__ctas { display: inline-flex; flex-wrap: wrap; gap: 0.85rem; align-items: center; }
+    .hero__stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(165, 123, 255, 0.18);
+    }
+    .hero__stat-value {
+      font-family: var(--lb-font-display);
+      font-size: 2.25rem;
+      line-height: 1;
+      color: var(--lb-ink);
+    }
+    .hero__stat-label {
+      margin-top: 0.5rem;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--lb-mist-2);
+    }
+
+    /* Hero image stack */
+    .hero__visual {
+      position: relative;
+      aspect-ratio: 1 / 1.05;
+      max-width: 560px;
+      margin-left: auto;
+    }
+    .hero__visual-img {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 64% 36% 58% 42% / 48% 60% 40% 52%;
+      overflow: hidden;
+      animation: lb-blob-morph 22s ease-in-out infinite;
+      box-shadow:
+        0 0 0 1px rgba(255, 43, 177, 0.3),
+        0 40px 80px -30px rgba(0, 0, 0, 0.6);
+    }
+    .hero__visual-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+
+    .hero__badge-floater {
+      position: absolute;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.6rem 0.95rem;
+      border-radius: 999px;
+      background: rgba(14, 3, 34, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 18px 36px -16px rgba(0, 0, 0, 0.6);
+      font-family: var(--lb-font-body);
+      font-size: 0.82rem;
+      color: var(--lb-ink);
+      font-weight: 500;
+    }
+    .hero__badge-floater i { color: var(--lb-citrine); font-size: 1.1rem; }
+    .hero__badge-floater--top { top: 4%; right: -8%; }
+    .hero__badge-floater--bottom { bottom: 6%; left: -10%; }
+    .hero__badge-floater b {
+      color: var(--lb-citrine);
+      font-family: var(--lb-font-display);
+      font-weight: 400;
+      font-size: 1.05rem;
+      margin-right: 0.1rem;
+      letter-spacing: -0.01em;
+    }
+
+    @media (max-width: 960px) {
+      .hero__visual { margin: 0 auto; }
+      .hero__badge-floater--top { right: 0; }
+      .hero__badge-floater--bottom { left: 0; }
+    }
+
+    /* ---- Section heading ----------------------------------------------- */
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 2rem;
+      align-items: end;
+      margin-bottom: 3rem;
+    }
+    @media (max-width: 760px) { .section-head { grid-template-columns: 1fr; } }
+    .section-head h2 {
+      font-size: clamp(2rem, 4.2vw, 3.25rem);
+      line-height: 1;
+      max-width: 22ch;
+      margin: 0;
+    }
+    .section-head p {
+      max-width: 28rem;
+      color: var(--lb-mist);
+      font-size: 1.05rem;
+      margin: 0;
+    }
+
+    /* ---- Editorial features grid -------------------------------------- */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.25rem;
+    }
+    @media (max-width: 900px) { .features { grid-template-columns: 1fr; } }
+
+    .feat {
+      grid-column: span 4;
+      background: rgba(31, 10, 74, 0.7);
+      border: 1px solid rgba(165, 123, 255, 0.22);
+      border-radius: 24px;
+      padding: 1.75rem;
+      box-shadow: var(--lb-shadow-card);
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--lb-dur-base) var(--lb-ease),
+                  border-color var(--lb-dur-base) var(--lb-ease);
+    }
+    .feat:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 43, 177, 0.45);
+    }
+    .feat--image {
+      grid-column: span 4;
+      padding: 0;
+      min-height: 320px;
+      background: var(--lb-void);
+      position: relative;
+      overflow: hidden;
+    }
+    .feat--image img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .feat--image::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(0deg, rgba(14, 3, 34, 0.95) 0%, rgba(14, 3, 34, 0.55) 35%, rgba(14, 3, 34, 0) 70%);
+      pointer-events: none;
+    }
+    .feat--image .feat__caption {
+      position: absolute; left: 1.5rem; right: 1.5rem; bottom: 1.5rem;
+      z-index: 1;
+      font-family: var(--lb-font-display);
+      font-size: 1.6rem;
+      color: var(--lb-ink);
+      line-height: 1.1;
+    }
+    .feat--image .feat__caption small {
+      display: block;
+      font-family: var(--lb-font-body);
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: var(--lb-citrine);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    .feat--wide { grid-column: span 8; }
+
+    /* Icons sit on their own — no framed container. */
+    .feat__icon {
+      display: inline-flex;
+      align-items: center;
+      color: var(--lb-magenta);
+      font-size: 2.25rem;
+      line-height: 1;
+    }
+    .feat__title {
+      margin: 1rem 0 0.5rem 0;
+      font-family: var(--lb-font-display);
+      font-size: 1.6rem;
+      line-height: 1;
+      color: var(--lb-ink);
+    }
+    .feat__copy { color: var(--lb-mist); font-size: 0.98rem; margin: 0; }
+    .feat__meta {
+      margin-top: 1.25rem;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      color: var(--lb-teal);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .feat__meta i { font-size: 1.05rem; }
+
+    /* ---- Gallery ------------------------------------------------------ */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.25rem;
+    }
+    @media (max-width: 900px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+    .gal {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      background: var(--lb-void);
+      box-shadow: var(--lb-shadow-card);
+      isolation: isolate;
+      transition: transform var(--lb-dur-base) var(--lb-ease);
+    }
+    .gal:hover { transform: translateY(-3px); }
+    .gal img { width: 100%; height: 100%; object-fit: cover; transition: transform 8s var(--lb-ease); }
+    .gal:hover img { transform: scale(1.04); }
+    .gal__overlay {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      z-index: 1;
+      padding: 1.25rem 1.25rem 1.1rem;
+      background: linear-gradient(0deg, rgba(14, 3, 34, 0.95) 0%, rgba(14, 3, 34, 0.55) 50%, rgba(14, 3, 34, 0) 100%);
+      color: var(--lb-ink);
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem;
+    }
+    .gal__overlay h3 {
+      font-family: var(--lb-font-display);
+      font-size: 1.35rem;
+      line-height: 1;
+      margin: 0 0 0.3rem 0;
+      color: var(--lb-ink);
+    }
+    .gal__overlay span {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--lb-citrine);
+      font-weight: 600;
+    }
+    .gal__arrow {
+      color: var(--lb-ink);
+      font-size: 1.5rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .gal--01 { grid-column: span 5; aspect-ratio: 4 / 5; }
+    .gal--02 { grid-column: span 4; aspect-ratio: 4 / 5; }
+    .gal--03 { grid-column: span 3; aspect-ratio: 4 / 5; }
+    @media (max-width: 900px) {
+      .gal--01, .gal--02, .gal--03 { grid-column: span 2; aspect-ratio: 1; }
+    }
+
+    /* ---- Editorial split ---------------------------------------------- */
+    .editorial {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: clamp(2rem, 5vw, 4rem);
+      align-items: stretch;
+    }
+    @media (max-width: 900px) { .editorial { grid-template-columns: 1fr; } }
+
+    .editorial__text { display: flex; flex-direction: column; gap: 1.5rem; }
+    .editorial__lead {
+      font-size: 1.5rem;
+      line-height: 1.4;
+      color: var(--lb-ink);
+      margin: 0;
+      font-family: var(--lb-font-body);
+      font-weight: 400;
+    }
+    .editorial__lead b {
+      color: var(--lb-ink);
+      font-weight: 700;
+    }
+    .editorial__body p {
+      font-size: 1.02rem;
+      color: var(--lb-mist);
+      line-height: 1.65;
+    }
+
+    .editorial__quote {
+      background: var(--lb-nebula-2);
+      border-radius: 24px;
+      padding: 2rem 2rem 1.75rem;
+      border: 1px solid rgba(255, 43, 177, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .editorial__quote p {
+      font-style: italic;
+      font-size: 1.35rem;
+      line-height: 1.45;
+      color: var(--lb-ink);
+      margin: 0;
+      position: relative;
+    }
+    .editorial__quote p::first-letter {
+      color: var(--lb-magenta);
+      font-family: var(--lb-font-display);
+      font-size: 2.4em;
+      line-height: 0.7;
+      float: left;
+      margin-right: 0.12em;
+      margin-top: 0.08em;
+      font-style: normal;
+    }
+    .editorial__quote-attr {
+      margin-top: 1.5rem;
+      display: flex; align-items: center; gap: 0.85rem;
+      position: relative;
+    }
+    .editorial__quote-attr-avatar {
+      width: 2.5rem; height: 2.5rem;
+      border-radius: 999px;
+      background: var(--lb-magenta);
+      display: grid; place-items: center;
+      color: var(--lb-ink);
+      font-family: var(--lb-font-display);
+    }
+    .editorial__quote-attr-meta {
+      font-size: 0.85rem;
+      color: var(--lb-mist);
+    }
+    .editorial__quote-attr-meta strong { color: var(--lb-ink); display: block; font-weight: 600; }
+
+    .editorial__media {
+      display: grid;
+      gap: 1.25rem;
+      min-height: 520px;
+    }
+    .editorial__media-tile {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      background: var(--lb-void);
+      box-shadow: var(--lb-shadow-card);
+    }
+    .editorial__media-tile img { width: 100%; height: 100%; object-fit: cover; }
+    .editorial__media-tile::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(0deg, rgba(14, 3, 34, 0.9) 0%, rgba(14, 3, 34, 0.5) 35%, rgba(14, 3, 34, 0) 70%);
+      pointer-events: none;
+    }
+    .editorial__media-tile-caption {
+      position: absolute; bottom: 1rem; left: 1.25rem; right: 1.25rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+      z-index: 1;
+      font-family: var(--lb-font-display);
+      font-size: 1.25rem;
+      color: var(--lb-ink);
+      line-height: 1;
+    }
+    .editorial__media-tile-caption span {
+      font-family: var(--lb-font-body);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--lb-citrine);
+      font-weight: 600;
+    }
+
+    /* ---- Settings / Components Demo ---------------------------------- */
+    .composer {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 1.5rem;
+      align-items: stretch;
+    }
+    @media (max-width: 900px) { .composer { grid-template-columns: 1fr; } }
+
+    .composer__panel {
+      background: var(--lb-nebula-2);
+      border: 1px solid rgba(165, 123, 255, 0.28);
+      border-radius: 32px;
+      padding: 2rem;
+      box-shadow: var(--lb-shadow-card);
+      position: relative;
+      overflow: hidden;
+    }
+    .composer__title {
+      font-family: var(--lb-font-display);
+      font-size: 1.8rem;
+      line-height: 1;
+      color: var(--lb-ink);
+      margin: 0 0 0.5rem 0;
+    }
+    .composer__sub {
+      font-size: 0.95rem;
+      color: var(--lb-mist);
+      margin: 0 0 1.5rem 0;
+    }
+    .composer__tabs {
+      display: flex;
+      gap: 1.5rem;
+      border-bottom: 1px solid rgba(165, 123, 255, 0.2);
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .composer__tab {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-family: var(--lb-font-body);
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--lb-mist);
+      padding: 0.8rem 0;
+      position: relative;
+      display: inline-flex; align-items: center; gap: 0.45rem;
+    }
+    .composer__tab.is-active { color: var(--lb-ink); }
+    .composer__tab.is-active::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: -1px;
+      height: 3px;
+      border-radius: 3px;
+      background: var(--lb-magenta);
+    }
+    .composer__field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .composer__field-grid > .lb-field--full { grid-column: span 2; }
+    @media (max-width: 540px) {
+      .composer__field-grid { grid-template-columns: 1fr; }
+      .composer__field-grid > .lb-field--full { grid-column: span 1; }
+    }
+    .composer__divider {
+      height: 1px;
+      background: rgba(165, 123, 255, 0.22);
+      margin: 1.5rem 0;
+    }
+    .composer__row {
+      display: flex; flex-wrap: wrap; gap: 1.25rem;
+      justify-content: space-between; align-items: center;
+    }
+    .composer__row + .composer__divider { margin-top: 1rem; }
+    .composer__pill-group {
+      display: inline-flex; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .composer__pill {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(165, 123, 255, 0.25);
+      color: var(--lb-mist);
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all var(--lb-dur-base) var(--lb-ease);
+    }
+    .composer__pill[aria-pressed="true"] {
+      background: rgba(126, 59, 255, 0.25);
+      border-color: rgba(255, 43, 177, 0.55);
+      color: var(--lb-ink);
+    }
+    .composer__pill[aria-pressed="true"] i { color: var(--lb-citrine); }
+    .composer__pill i { font-size: 0.95rem; color: var(--lb-iris-soft); }
+
+    /* Now playing card */
+    .now-playing {
+      position: relative;
+      background: var(--lb-nebula);
+      border-radius: 32px;
+      padding: 1.75rem;
+      overflow: hidden;
+      box-shadow: var(--lb-shadow-card);
+      border: 1px solid rgba(255, 43, 177, 0.32);
+      display: flex; flex-direction: column; gap: 1.25rem;
+    }
+    .now-playing__top {
+      display: flex; align-items: center; gap: 1rem; justify-content: space-between;
+    }
+    .now-playing__chip {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      background: rgba(255, 43, 177, 0.18);
+      border: 1px solid rgba(255, 43, 177, 0.45);
+      color: #FFB8E2;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-weight: 600;
+    }
+    .now-playing__chip::before {
+      content: "";
+      width: 0.55rem; height: 0.55rem;
+      border-radius: 999px;
+      background: var(--lb-magenta);
+      animation: lb-pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes lb-pulse { 0%, 100% { transform: scale(1); opacity: 1;} 50% { transform: scale(1.4); opacity: 0.5;} }
+
+    .now-playing__stage {
+      position: relative;
+      aspect-ratio: 1.3 / 1;
+      border-radius: 24px;
+      overflow: hidden;
+      background: var(--lb-void);
+    }
+    .now-playing__stage img { width: 100%; height: 100%; object-fit: cover; }
+    .now-playing__stage::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(0deg, rgba(14, 3, 34, 0.9) 0%, rgba(14, 3, 34, 0.4) 40%, rgba(14, 3, 34, 0) 70%);
+    }
+    .now-playing__stage-meta {
+      position: absolute; left: 1.25rem; right: 1.25rem; bottom: 1rem;
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem;
+      z-index: 1;
+    }
+    .now-playing__title {
+      font-family: var(--lb-font-display);
+      font-size: 1.6rem;
+      line-height: 1;
+      color: var(--lb-ink);
+      margin: 0;
+    }
+    .now-playing__title small {
+      display: block;
+      font-family: var(--lb-font-body);
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--lb-citrine);
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+    }
+    .now-playing__time {
+      font-family: var(--lb-font-display);
+      font-size: 1rem;
+      color: var(--lb-ink);
+      letter-spacing: 0.05em;
+    }
+    .now-playing__waveform {
+      display: flex; align-items: end; justify-content: space-between;
+      gap: 2px;
+      height: 44px;
+    }
+    .now-playing__waveform span {
+      flex: 1;
+      background: var(--lb-magenta);
+      border-radius: 2px;
+      opacity: 0.85;
+      animation: lb-wave 1.4s ease-in-out infinite;
+    }
+    .now-playing__waveform span:nth-child(2n) { animation-delay: 0.15s; }
+    .now-playing__waveform span:nth-child(3n) { animation-delay: 0.3s; }
+    .now-playing__waveform span:nth-child(5n) { animation-delay: 0.45s; }
+    .now-playing__waveform span:nth-child(7n) { animation-delay: 0.6s; }
+    @keyframes lb-wave {
+      0%, 100% { height: 14%; }
+      40%      { height: 95%; }
+      70%      { height: 50%; }
+    }
+    .now-playing__progress {
+      position: relative;
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+    .now-playing__progress::after {
+      content: "";
+      position: absolute; left: 0; top: 0;
+      width: 64%;
+      height: 100%;
+      background: var(--lb-magenta);
+    }
+    .now-playing__controls {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .now-playing__controls-left { display: inline-flex; align-items: center; gap: 1.25rem; }
+
+    /* Icon controls live on their own — no boxed frame. */
+    .icon-button {
+      background: transparent;
+      border: none;
+      padding: 0.25rem;
+      color: var(--lb-mist);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: color var(--lb-dur-base) var(--lb-ease),
+                  transform var(--lb-dur-fast) var(--lb-ease);
+    }
+    .icon-button:hover { color: var(--lb-ink); }
+    .icon-button i { font-size: 1.5rem; line-height: 1; }
+    .icon-button--primary { color: var(--lb-magenta); }
+    .icon-button--primary i { font-size: 2.25rem; }
+    .icon-button--primary:hover { color: #FF4FBE; }
+
+    /* ---- Pricing / Membership ------------------------------------------ */
+    .tiers {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+    @media (max-width: 900px) { .tiers { grid-template-columns: 1fr; } }
+    .tier {
+      background: rgba(31, 10, 74, 0.7);
+      border: 1px solid rgba(165, 123, 255, 0.22);
+      border-radius: 28px;
+      padding: 1.85rem;
+      box-shadow: var(--lb-shadow-card);
+      display: flex; flex-direction: column; gap: 1.25rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .tier--featured {
+      border-color: rgba(255, 43, 177, 0.6);
+      background: var(--lb-nebula-2);
+    }
+    .tier__head { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+    .tier__name {
+      font-family: var(--lb-font-display);
+      font-size: 1.5rem;
+      line-height: 1;
+      color: var(--lb-ink);
+      margin: 0;
+    }
+    .tier__price {
+      font-family: var(--lb-font-display);
+      font-size: 2.85rem;
+      line-height: 1;
+      color: var(--lb-ink);
+    }
+    .tier__price small {
+      font-family: var(--lb-font-body);
+      font-size: 0.85rem;
+      color: var(--lb-mist-2);
+      letter-spacing: 0;
+      margin-left: 0.25rem;
+    }
+    .tier__list {
+      list-style: none; padding: 0; margin: 0;
+      display: flex; flex-direction: column; gap: 0.75rem;
+      flex: 1;
+    }
+    .tier__list li {
+      display: flex; align-items: flex-start; gap: 0.7rem;
+      color: var(--lb-mist);
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+    .tier__list li i {
+      color: var(--lb-citrine);
+      font-size: 1.05rem;
+      margin-top: 0.1rem;
+      flex-shrink: 0;
+    }
+
+    /* ---- CTA Manifesto ---------------------------------------------- */
+    .manifesto {
+      text-align: center;
+      padding: clamp(3rem, 7vw, 5.5rem) 0;
+      position: relative;
+    }
+    .manifesto__ornament {
+      width: clamp(180px, 24vw, 280px);
+      aspect-ratio: 1;
+      margin: 0 auto 1.5rem;
+      color: var(--lb-citrine);
+      opacity: 0.55;
+      animation: lb-spin 80s linear infinite;
+    }
+    .manifesto__ornament svg { width: 100%; height: 100%; }
+    .manifesto h2 {
+      font-family: var(--lb-font-display);
+      font-size: clamp(2.5rem, 6vw, 4.75rem);
+      line-height: 0.95;
+      margin: 0 auto 1.5rem;
+      max-width: 18ch;
+      letter-spacing: -0.015em;
+      color: var(--lb-ink);
+    }
+    .manifesto p {
+      max-width: 32rem;
+      margin: 0 auto 2rem;
+      font-size: 1.1rem;
+      color: var(--lb-mist);
+    }
+    .manifesto__row {
+      display: inline-flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: center;
+    }
+
+    /* ---- Footer ----------------------------------------------------- */
+    .lb-footer {
+      border-top: 1px solid rgba(165, 123, 255, 0.18);
+      padding-block: 3rem 2.5rem;
+      position: relative;
+    }
+    .lb-footer__grid {
+      display: grid;
+      grid-template-columns: 1.4fr 0.9fr 0.9fr 0.9fr;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+    @media (max-width: 900px) {
+      .lb-footer__grid { grid-template-columns: 1fr 1fr; }
+    }
+    .lb-footer h4 {
+      font-family: var(--lb-font-body);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--lb-mist-2);
+      font-weight: 600;
+      margin: 0 0 1.25rem 0;
+    }
+    .lb-footer ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.7rem; }
+    .lb-footer a {
+      color: var(--lb-mist);
+      font-size: 0.95rem;
+    }
+    .lb-footer a:hover { color: var(--lb-ink); }
+    .lb-footer__brand {
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .lb-footer__brand p {
+      color: var(--lb-mist);
+      font-size: 0.95rem;
+      max-width: 28ch;
+      margin: 0;
+    }
+    .lb-footer__brand-mark {
+      display: inline-flex; align-items: center; gap: 0.85rem;
+      font-family: var(--lb-font-display);
+      font-size: 1.55rem;
+      color: var(--lb-ink);
+    }
+    .lb-footer__brand-mark svg { width: 2rem; height: 2rem; color: var(--lb-magenta); }
+    .lb-footer__bottom {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;
+      padding-top: 1.75rem;
+      border-top: 1px solid rgba(165, 123, 255, 0.18);
+      font-size: 0.82rem;
+      color: var(--lb-mist-2);
+    }
+    .lb-footer__bottom-social {
+      display: inline-flex; gap: 1.25rem;
+    }
+    /* Social icons stand on their own — no circle frame. */
+    .lb-footer__bottom-social a {
+      color: var(--lb-mist);
+      font-size: 1.25rem;
+      line-height: 1;
+      transition: color var(--lb-dur-base) var(--lb-ease);
+    }
+    .lb-footer__bottom-social a:hover {
+      color: var(--lb-citrine);
+      background: transparent;
+    }
+  </style>
+</head>
+<body>
+  <!-- Define reusable starburst symbol with the brand logo path -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="lb-burst" viewBox="0 0 402.85 416.75">
+        <path fill="currentColor" d="M174.54,77.91l11.61,24.5,15.16,31.98c.48,1,1.84,1.03,2.34.04l16.1-31.48,9.99-19.54c.64-1.26,2.46-.79,2.48.63l.25,22.17.4,35.77c.01,1.12,1.23,1.76,2.09,1.1l27.57-21.13,16.9-12.95c1.1-.84,2.55.4,1.97,1.7l-8.86,19.85-14.44,32.36c-.45,1.02.38,2.14,1.43,1.94l33.55-6.46,20.87-4.02c1.34-.26,2.13,1.52,1.07,2.42l-16.42,14.06-26.41,22.61c-.83.71-.55,2.1.49,2.4l32.91,9.4,20.19,5.77c1.31.38,1.29,2.34-.04,2.67l-20.37,5.11-33.22,8.34c-1.04.26-1.36,1.65-.56,2.38l25.79,23.46,15.99,14.54c1.03.93.19,2.69-1.14,2.39l-20.69-4.66-33.34-7.51c-1.05-.24-1.91.86-1.49,1.89l13.49,32.79,8.3,20.18c.54,1.31-.94,2.51-2.02,1.63l-16.58-13.53-26.96-22c-.84-.69-2.08-.09-2.12,1.03l-1.42,35.75-.87,21.99c-.06,1.42-1.89,1.83-2.49.56l-9.33-19.68-15.16-31.98c-.48-1-1.84-1.03-2.34-.04l-16.1,31.48-9.99,19.54c-.64,1.26-2.46.79-2.48-.63l-.25-22.17-.4-35.77c-.01-1.12-1.23-1.76-2.09-1.1l-27.57,21.13-16.9,12.95c-1.1.84-2.55-.4-1.97-1.7l8.86-19.85,14.44-32.36c.45-1.02-.38-2.14-1.43-1.94l-33.55,6.46-20.87,4.02c-1.34.26-2.13-1.52-1.07-2.42l16.42-14.06,26.41-22.61c.83-.71.55-2.1-.49-2.4l-32.91-9.4-20.19-5.77c-1.31-.38-1.29-2.34.04-2.67l20.37-5.11,33.22-8.34c1.04-.26,1.36-1.65.56-2.38l-25.79-23.46-15.99-14.54c-1.03-.93-.19-2.69,1.14-2.39l20.69,4.66,33.34,7.51c1.05.24,1.91-.86,1.49-1.89l-13.49-32.79-8.3-20.18c-.54-1.31.94-2.51,2.02-1.63l16.58,13.53,26.96,22c.84.69,2.08.09,2.12-1.03l1.42-35.75,1.09-27.36M158.72,0l-4.04,101.77c-.04,1.12-1.28,1.72-2.12,1.03l-72.68-59.31c-1.07-.88-2.56.32-2.02,1.63l36.43,88.59c.42,1.03-.44,2.13-1.49,1.89l-90.07-20.3c-1.33-.3-2.17,1.45-1.14,2.39l69.56,63.27c.81.74.48,2.12-.56,2.38L1.01,205.84c-1.32.33-1.35,2.29-.04,2.67l88.87,25.39c1.03.29,1.32,1.69.49,2.4l-71.33,61.06c-1.05.9-.27,2.68,1.07,2.42l90.61-17.44c1.05-.2,1.88.92,1.43,1.94l-39,87.38c-.58,1.29.87,2.54,1.97,1.7l74.34-56.97c.86-.66,2.08-.02,2.09,1.1l1.08,96.47c.02,1.43,1.83,1.89,2.48.63l43.49-85.05c.51-.99,1.86-.97,2.34.04l40.95,86.4c.61,1.28,2.44.87,2.49-.56l3.83-96.4c.04-1.12,1.28-1.72,2.12-1.03l72.68,59.31c1.07.88,2.56-.32,2.02-1.63l-36.44-88.59c-.42-1.03.44-2.13,1.49-1.89l90.07,20.3c1.33.3,2.17-1.45,1.14-2.39l-69.56-63.27c-.81-.74-.48-2.12.56-2.38l89.59-22.5c1.32-.33,1.35-2.29.04-2.67l-88.87-25.39c-1.03-.29-1.32-1.69-.49-2.4l71.33-61.06c1.05-.9.27-2.68-1.07-2.42l-90.61,17.44c-1.05.2-1.88-.92-1.43-1.94l39-87.38c.58-1.29-.87-2.54-1.97-1.7l-74.34,56.97c-.86.66-2.08-.02-2.09-1.1l-1.08-96.47c-.02-1.43-1.83-1.89-2.48-.63l-43.49,85.05c-.51.99-1.86.97-2.34-.04L158.72,0Z"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <div class="page">
+
+    <!-- ============ NAV ============ -->
+    <header class="lb-container">
+      <nav class="lb-nav" aria-label="Primary">
+        <a class="lb-nav__brand" href="#" aria-label="Lucidbloom home">
+          <span class="lb-nav__brand-mark"><svg aria-hidden="true"><use href="#lb-burst" /></svg></span>
+          <span>Lucidbloom</span>
+          <span class="nav-tag">Vol. 04</span>
+        </a>
+        <ul class="lb-nav__links">
+          <li><a href="#">Almanac</a></li>
+          <li><a href="#">Broadcasts</a></li>
+          <li><a href="#">Field Notes</a></li>
+          <li><a href="#">Membership</a></li>
+        </ul>
+        <div class="lb-row" style="gap: 0.6rem;">
+          <a class="lb-btn lb-btn--ghost lb-btn--sm" href="#">Sign in</a>
+          <a class="lb-btn lb-btn--primary lb-btn--sm" href="#">Become a Member <i class="ph ph-arrow-up-right"></i></a>
+        </div>
+      </nav>
+    </header>
+
+    <!-- ============ HERO ============ -->
+    <section class="lb-container hero">
+      <div class="hero__grid">
+        <div>
+          <h1 class="hero__display">Slip into the velvet<br>broadcast.</h1>
+          <p class="hero__lead">A psychedelic journal, late-night radio, and visual almanac for the dreamers, drifters, and ecstatic gardeners. New chapters bloom every full moon — tuned to the slow frequency of color.</p>
+          <div class="hero__ctas">
+            <a class="lb-btn lb-btn--primary" href="#">Tune the broadcast <i class="ph ph-play"></i></a>
+            <a class="lb-btn lb-btn--secondary" href="#">Read the almanac</a>
+            <span class="lb-badge lb-badge--magenta" style="margin-left: 0.5rem;"><i class="ph ph-radio" style="font-size:0.85rem"></i> Live Broadcast 04</span>
+          </div>
+
+          <div class="hero__stats">
+            <div>
+              <div class="hero__stat-value">148</div>
+              <div class="hero__stat-label">Field notes published</div>
+            </div>
+            <div>
+              <div class="hero__stat-value">21<span style="color:var(--lb-mist-2); font-size:0.85em;">k</span></div>
+              <div class="hero__stat-label">Cosmic gardeners</div>
+            </div>
+            <div>
+              <div class="hero__stat-value">04</div>
+              <div class="hero__stat-label">Seasonal volumes</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero__visual">
+          <div class="hero__visual-img">
+            <img src="../images/eye.png" alt="A radiant psychedelic eye surrounded by woven rainbow waves." />
+          </div>
+          <span class="hero__badge-floater hero__badge-floater--top">
+            <i class="ph ph-eye"></i>
+            Now playing <b>04 · Aurora Drift</b>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FEATURES ============ -->
+    <section class="lb-container lb-section" style="padding-top: clamp(2rem, 5vw, 4rem);">
+      <div class="section-head">
+        <h2>What blooms<br>inside Vol. 04</h2>
+        <p>Each volume bundles a slow-radio mix, an illustrated field guide, and a private gathering. Three signals, one frequency.</p>
+      </div>
+
+      <div class="features">
+        <article class="feat">
+          <span class="feat__icon"><i class="ph ph-music-notes"></i></span>
+          <h3 class="feat__title">Drift Sessions</h3>
+          <p class="feat__copy">Three new long-form mixes a month, mastered for the bedroom and the desert. Hosted by rotating cosmic gardeners.</p>
+          <span class="feat__meta">Updated weekly <i class="ph ph-arrow-right"></i></span>
+        </article>
+
+        <article class="feat">
+          <span class="feat__icon"><i class="ph ph-flower-lotus"></i></span>
+          <h3 class="feat__title">Field Almanac</h3>
+          <p class="feat__copy">An illustrated, season-by-season journal of psychoactive plants, ceremonies, sound rituals, and quiet revelations.</p>
+          <span class="feat__meta">220 pages · Seasonal <i class="ph ph-arrow-right"></i></span>
+        </article>
+
+        <article class="feat">
+          <span class="feat__icon"><i class="ph ph-users-three"></i></span>
+          <h3 class="feat__title">Lucid Hours</h3>
+          <p class="feat__copy">Private members-only gatherings at solstice, equinox, and every full moon. In your kitchen, in your headphones.</p>
+          <span class="feat__meta">8 events per year <i class="ph ph-arrow-right"></i></span>
+        </article>
+
+        <article class="feat feat--image feat--wide">
+          <img src="../images/fractal.png" alt="Swirling violet, magenta, and marigold liquid marble pattern with cosmic specks." />
+          <div class="feat__caption">
+            <small>Feature essay · 18 min read</small>
+            Cell painting as a meditation on returning to the same river twice.
+          </div>
+        </article>
+
+        <article class="feat" style="grid-column: span 4;">
+          <span class="feat__icon"><i class="ph ph-waveform"></i></span>
+          <h3 class="feat__title">Frequency Index</h3>
+          <p class="feat__copy">Open archive of every transmission since Vol. 01, indexed by hue, hour, and herb. Built with members.</p>
+          <span class="feat__meta">412 broadcasts <i class="ph ph-arrow-right"></i></span>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ GALLERY ============ -->
+    <section class="lb-container lb-section">
+      <div class="section-head">
+        <h2>The Vol. 04<br>visual diary</h2>
+        <p>Hand-illustrated covers, marble photography, and contributor portraits — each chapter pairs with one piece of artwork.</p>
+      </div>
+
+      <div class="gallery">
+        <a class="gal gal--01" href="#" aria-label="Open chapter: The mushroom kitchen">
+          <img src="../images/mushroom.png" alt="Bright 1960s-style psychedelic mushroom garden poster with magenta, marigold, and teal." />
+          <div class="gal__overlay">
+            <div>
+              <span>Chapter 01</span>
+              <h3>The Mushroom Kitchen</h3>
+            </div>
+            <span class="gal__arrow"><i class="ph ph-arrow-up-right"></i></span>
+          </div>
+        </a>
+        <a class="gal gal--02" href="#" aria-label="Open chapter: Marble cosmos">
+          <img src="../images/marble.png" alt="Violet, magenta, and teal liquid marble texture with golden droplets." />
+          <div class="gal__overlay">
+            <div>
+              <span>Chapter 02</span>
+              <h3>Marble Cosmos</h3>
+            </div>
+            <span class="gal__arrow"><i class="ph ph-arrow-up-right"></i></span>
+          </div>
+        </a>
+        <a class="gal gal--03" href="#" aria-label="Open chapter: A single eye">
+          <img src="../images/eye.png" alt="Detailed eye surrounded by woven rainbow waves." />
+          <div class="gal__overlay">
+            <div>
+              <span>Chapter 03</span>
+              <h3>A Single Eye</h3>
+            </div>
+            <span class="gal__arrow"><i class="ph ph-arrow-up-right"></i></span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============ EDITORIAL ============ -->
+    <section class="lb-container lb-section">
+      <div class="section-head">
+        <h2>Field notes from<br>the velvet garden</h2>
+        <p>Read alongside the broadcast. Each issue opens with one long letter from a contributor in the field.</p>
+      </div>
+
+      <div class="editorial">
+        <div class="editorial__text">
+          <p class="editorial__lead">Color is a slow language. <b>Lucidbloom</b> is built for readers who notice — who walk back to look at the same purple twice, who keep a quiet record of the way light folds at the end of an afternoon.</p>
+
+          <div class="editorial__body">
+            <p>We started this almanac because the radio felt thinner each year. The slow shows had vanished from the public dial. The strange ones too. We wanted a place to gather what we still believed in: long-form mixes, hand-drawn diagrams, a few good recipes for hibiscus tea, a year-long correspondence between a herbalist in Lisbon and a fungal artist on Vashon Island.</p>
+            <p>Volume 04 is the equinox edition. We weave together three voices — a colorist, a gardener, and a sound healer — and a single guiding question: <em>what blooms inside us when nothing else is asked of the day?</em></p>
+          </div>
+
+          <div class="editorial__quote">
+            <p>The trick was never to find a brighter color, but to stay in the violet long enough for the eyes to admit the dark was full of light all along.</p>
+            <div class="editorial__quote-attr">
+              <div class="editorial__quote-attr-avatar">M</div>
+              <div class="editorial__quote-attr-meta">
+                <strong>Mira Pesoa</strong>
+                Editor, Vol. 04 · Lisbon
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="editorial__media">
+          <div class="editorial__media-tile">
+            <img src="../images/mushroom.png" alt="Psychedelic mushroom garden illustration." />
+            <div class="editorial__media-tile-caption">
+              On the kitchen garden
+              <span>Vol. 04 · Ch. 01</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COMPOSER / SETTINGS DEMO ============ -->
+    <section class="lb-container lb-section">
+      <div class="section-head">
+        <h2>Tune your<br>broadcast</h2>
+        <p>Members compose a custom drift channel — set the mood, the hour, and the side ingredients. The radio learns slowly.</p>
+      </div>
+
+      <div class="composer">
+        <!-- Now playing card -->
+        <div class="now-playing">
+          <div class="now-playing__top">
+            <span class="now-playing__chip">On air</span>
+            <span class="lb-meta">Vol. 04 · 32:17 / 64:08</span>
+          </div>
+
+          <div class="now-playing__stage">
+            <img src="../images/face.png" alt="A psychedelic editorial portrait illustration with magenta, teal, and citrine palette." />
+            <div class="now-playing__stage-meta">
+              <h3 class="now-playing__title">
+                <small>Now playing</small>
+                Aurora Drift, side A
+              </h3>
+              <div class="now-playing__time">32:17</div>
+            </div>
+          </div>
+
+          <div class="now-playing__waveform" aria-hidden="true">
+            <span style="height: 30%"></span><span style="height: 60%"></span><span style="height: 45%"></span>
+            <span style="height: 75%"></span><span style="height: 35%"></span><span style="height: 90%"></span>
+            <span style="height: 50%"></span><span style="height: 25%"></span><span style="height: 70%"></span>
+            <span style="height: 55%"></span><span style="height: 80%"></span><span style="height: 40%"></span>
+            <span style="height: 65%"></span><span style="height: 30%"></span><span style="height: 85%"></span>
+            <span style="height: 45%"></span><span style="height: 60%"></span><span style="height: 35%"></span>
+            <span style="height: 70%"></span><span style="height: 50%"></span><span style="height: 90%"></span>
+            <span style="height: 40%"></span><span style="height: 55%"></span><span style="height: 30%"></span>
+            <span style="height: 75%"></span><span style="height: 45%"></span><span style="height: 65%"></span>
+            <span style="height: 35%"></span><span style="height: 80%"></span><span style="height: 50%"></span>
+          </div>
+          <div class="now-playing__progress" aria-hidden="true"></div>
+
+          <div class="now-playing__controls">
+            <div class="now-playing__controls-left">
+              <button class="icon-button" aria-label="Previous"><i class="ph ph-skip-back"></i></button>
+              <button class="icon-button icon-button--primary" aria-label="Pause"><i class="ph ph-pause-circle"></i></button>
+              <button class="icon-button" aria-label="Next"><i class="ph ph-skip-forward"></i></button>
+            </div>
+            <div class="now-playing__controls-left">
+              <button class="icon-button" aria-label="Save"><i class="ph ph-bookmark-simple"></i></button>
+              <button class="icon-button" aria-label="Share"><i class="ph ph-share-network"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Composer panel -->
+        <div class="composer__panel">
+          <h3 class="composer__title">Compose tonight's drift</h3>
+          <p class="composer__sub">Pick a mood and a few side ingredients. The broadcast tunes itself between full moons.</p>
+
+          <div class="composer__tabs" role="tablist">
+            <button class="composer__tab is-active" role="tab" aria-selected="true">Tune</button>
+            <button class="composer__tab" role="tab" aria-selected="false">Library</button>
+            <button class="composer__tab" role="tab" aria-selected="false">History</button>
+          </div>
+
+          <div class="composer__field-grid">
+            <div class="lb-field">
+              <label class="lb-label" for="cmp-name">Channel name</label>
+              <input id="cmp-name" class="lb-input" type="text" value="Velvet Equinox" />
+            </div>
+            <div class="lb-field">
+              <label class="lb-label" for="cmp-hour">Best hour to bloom</label>
+              <select id="cmp-hour" class="lb-select">
+                <option>Midnight to 4:00 am</option>
+                <option>Sunset onward</option>
+                <option>Slow Sunday afternoon</option>
+              </select>
+            </div>
+            <div class="lb-field lb-field--full">
+              <label class="lb-label" for="cmp-letter">Letter to the gardener</label>
+              <textarea id="cmp-letter" class="lb-textarea" placeholder="What did the day ask of you?">Tonight, take me somewhere violet and warm. Long mixes, no announcements. End on something teal.</textarea>
+              <span class="lb-help">Optional. Mira reads every letter before the equinox.</span>
+            </div>
+          </div>
+
+          <div class="composer__divider"></div>
+
+          <div class="lb-stack lb-stack--sm">
+            <span class="lb-label">Side ingredients</span>
+            <div class="composer__pill-group">
+              <button class="composer__pill" aria-pressed="true"><i class="ph ph-flower-lotus"></i> Lotus reverb</button>
+              <button class="composer__pill" aria-pressed="true"><i class="ph ph-wind"></i> Soft static</button>
+              <button class="composer__pill" aria-pressed="false"><i class="ph ph-drop"></i> Rain field</button>
+              <button class="composer__pill" aria-pressed="true"><i class="ph ph-moon-stars"></i> Citrine dust</button>
+              <button class="composer__pill" aria-pressed="false"><i class="ph ph-leaf"></i> Garden hush</button>
+              <button class="composer__pill" aria-pressed="false"><i class="ph ph-fire"></i> Slow ember</button>
+            </div>
+          </div>
+
+          <div class="composer__divider"></div>
+
+          <div class="composer__row">
+            <div class="lb-stack lb-stack--sm" style="gap:0.6rem;">
+              <label class="lb-check">
+                <input type="checkbox" checked>
+                <span>Auto-tune at moonrise</span>
+              </label>
+              <label class="lb-check">
+                <input type="checkbox" checked>
+                <span>Cross-fade between sides</span>
+              </label>
+              <label class="lb-check">
+                <input type="checkbox">
+                <span>Send a letter back to the editor</span>
+              </label>
+            </div>
+            <div class="lb-row" style="gap: 0.6rem;">
+              <a class="lb-btn lb-btn--secondary lb-btn--sm" href="#">Save channel</a>
+              <a class="lb-btn lb-btn--primary lb-btn--sm" href="#">Begin drift <i class="ph ph-sparkle"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TIERS ============ -->
+    <section class="lb-container lb-section">
+      <div class="section-head">
+        <h2>Three doors into<br>the broadcast</h2>
+        <p>Pick the one that fits the rhythm of your year. Cancel between equinoxes; we keep no calendars.</p>
+      </div>
+
+      <div class="tiers">
+        <article class="tier">
+          <div class="tier__head">
+            <h3 class="tier__name">Drifter</h3>
+            <span class="lb-badge lb-badge--teal"><i class="ph ph-leaf" style="font-size:0.85rem"></i> Free</span>
+          </div>
+          <div class="tier__price">0<small>/ year</small></div>
+          <p class="lb-body-sm" style="margin:0;">The open frequency. Listen to the latest drift session and read this season's opening letter.</p>
+          <ul class="tier__list">
+            <li><i class="ph ph-check-circle"></i> Weekly drift session</li>
+            <li><i class="ph ph-check-circle"></i> One open chapter per volume</li>
+            <li><i class="ph ph-check-circle"></i> Newsletter, slowly written</li>
+          </ul>
+          <a class="lb-btn lb-btn--secondary" href="#">Tune in for free</a>
+        </article>
+
+        <article class="tier tier--featured">
+          <div class="tier__head">
+            <h3 class="tier__name">Gardener</h3>
+            <span class="lb-badge lb-badge--solid"><i class="ph ph-sparkle" style="font-size:0.85rem"></i> Most loved</span>
+          </div>
+          <div class="tier__price">78<small>/ year</small></div>
+          <p class="lb-body-sm" style="margin:0;">The full almanac, every broadcast, and a printed volume mailed to your door each season.</p>
+          <ul class="tier__list">
+            <li><i class="ph ph-check-circle"></i> Every drift session, ad-free</li>
+            <li><i class="ph ph-check-circle"></i> Full almanac archive (all 4 volumes)</li>
+            <li><i class="ph ph-check-circle"></i> Printed seasonal zine, mailed</li>
+            <li><i class="ph ph-check-circle"></i> Compose your own channel</li>
+            <li><i class="ph ph-check-circle"></i> Members-only solstice gathering</li>
+          </ul>
+          <a class="lb-btn lb-btn--primary" href="#">Become a Gardener <i class="ph ph-arrow-up-right"></i></a>
+        </article>
+
+        <article class="tier">
+          <div class="tier__head">
+            <h3 class="tier__name">Editor</h3>
+            <span class="lb-badge lb-badge--citrine"><i class="ph ph-crown" style="font-size:0.85rem"></i> Patron</span>
+          </div>
+          <div class="tier__price">320<small>/ year</small></div>
+          <p class="lb-body-sm" style="margin:0;">Patrons keep the lights low and the broadcast slow. Includes everything below.</p>
+          <ul class="tier__list">
+            <li><i class="ph ph-check-circle"></i> All Gardener perks</li>
+            <li><i class="ph ph-check-circle"></i> Hand-signed Vol. 04 print</li>
+            <li><i class="ph ph-check-circle"></i> Quarterly call with the editor</li>
+            <li><i class="ph ph-check-circle"></i> Vote on the equinox theme</li>
+          </ul>
+          <a class="lb-btn lb-btn--secondary" href="#">Patron the broadcast</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ MANIFESTO CTA ============ -->
+    <section class="lb-container manifesto">
+      <div class="manifesto__ornament"><svg aria-hidden="true"><use href="#lb-burst" /></svg></div>
+      <h2>Stay in the violet long enough<br>and the dark will open.</h2>
+      <p>Vol. 04 is open until the equinox. Drift in for free, or step quietly into the garden.</p>
+      <div class="manifesto__row">
+        <a class="lb-btn lb-btn--primary lb-btn--lg" href="#">Become a Gardener <i class="ph ph-flower-lotus"></i></a>
+        <a class="lb-btn lb-btn--ghost" href="#">Hear tonight's drift <i class="ph ph-headphones"></i></a>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="lb-container lb-footer">
+      <div class="lb-footer__grid">
+        <div class="lb-footer__brand">
+          <span class="lb-footer__brand-mark">
+            <svg aria-hidden="true"><use href="#lb-burst" /></svg>
+            Lucidbloom
+          </span>
+          <p>A psychedelic dispatch from the velvet broadcast. Quarterly almanac, slow radio, and members-only gatherings.</p>
+        </div>
+
+        <div>
+          <h4>The Broadcast</h4>
+          <ul>
+            <li><a href="#">Drift sessions</a></li>
+            <li><a href="#">Almanac</a></li>
+            <li><a href="#">Field notes</a></li>
+            <li><a href="#">Frequency index</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Membership</h4>
+          <ul>
+            <li><a href="#">Become a Gardener</a></li>
+            <li><a href="#">Patrons</a></li>
+            <li><a href="#">Gift a volume</a></li>
+            <li><a href="#">Solstice gathering</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>The garden</h4>
+          <ul>
+            <li><a href="#">Contributors</a></li>
+            <li><a href="#">Open archive</a></li>
+            <li><a href="#">Contact Mira</a></li>
+            <li><a href="#">Print partners</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="lb-footer__bottom">
+        <span>© Lucidbloom Cooperative, Vol. 04. Recorded in Lisbon &amp; Vashon Island.</span>
+        <div class="lb-footer__bottom-social">
+          <a href="#" aria-label="Mixcloud"><i class="ph ph-soundcloud-logo"></i></a>
+          <a href="#" aria-label="Instagram"><i class="ph ph-instagram-logo"></i></a>
+          <a href="#" aria-label="Bandcamp"><i class="ph ph-music-note-simple"></i></a>
+          <a href="#" aria-label="Letter"><i class="ph ph-envelope-simple"></i></a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>

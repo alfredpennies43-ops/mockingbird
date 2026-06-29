@@ -1,19 +1,32 @@
 .shell {
   min-height: 100vh;
   min-height: 100dvh;
-  background: #0b0e1a;
-  color: #f0eee8;
-  font-family: var(--font-manrope), sans-serif;
+  background: var(--lb-void);
+  color: var(--lb-ink);
+  font-family: var(--lb-font-body), var(--font-outfit), sans-serif;
   padding: 2rem 1.2rem;
   padding-top: max(2rem, env(safe-area-inset-top));
   padding-bottom: max(2rem, env(safe-area-inset-bottom));
   padding-left: max(1.2rem, env(safe-area-inset-left));
   padding-right: max(1.2rem, env(safe-area-inset-right));
+  position: relative;
+  overflow: hidden;
+}
+
+.bloom {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 20% 0%, rgba(126, 59, 255, 0.35) 0%, transparent 55%),
+    radial-gradient(80% 70% at 100% 100%, rgba(255, 43, 177, 0.25) 0%, transparent 60%);
 }
 
 .inner {
   max-width: 520px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .logoWrap {
@@ -34,33 +47,33 @@
 }
 
 .progressStepActive {
-  background: linear-gradient(90deg, #ff2d78, #c026d3);
+  background: linear-gradient(90deg, #7e3bff, #ff2bb1, #ff8a2a);
 }
 
 .progressStepInactive {
-  background: rgba(240, 238, 232, 0.1);
+  background: rgba(165, 123, 255, 0.18);
 }
 
 .title {
-  font-family: var(--font-manrope), sans-serif;
-  font-size: clamp(1.5rem, 5vw, 2rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-family: var(--lb-font-display), serif;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
   margin-bottom: 1.5rem;
-  line-height: 1.15;
+  line-height: 1.05;
 }
 
 .label {
   display: block;
   font-size: 0.82rem;
-  color: rgba(240, 238, 232, 0.6);
+  color: var(--lb-mist);
   margin-bottom: 0.5rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .hint {
   font-size: 0.8rem;
-  color: rgba(240, 238, 232, 0.45);
+  color: var(--lb-mist-2);
   line-height: 1.55;
   margin-bottom: 0.65rem;
 }
@@ -71,10 +84,10 @@
   width: 100%;
   padding: 0.9rem 1rem;
   min-height: 48px;
-  background: #131729;
-  border: 1px solid rgba(240, 238, 232, 0.1);
-  border-radius: 12px;
-  color: #f0eee8;
+  background: rgba(14, 3, 34, 0.6);
+  border: 1px solid rgba(165, 123, 255, 0.32);
+  border-radius: var(--lb-radius-md);
+  color: var(--lb-ink);
   font-size: 1rem;
   font-family: inherit;
   outline: none;
@@ -85,7 +98,8 @@
 .input:focus,
 .select:focus,
 .textarea:focus {
-  border-color: rgba(255, 45, 120, 0.5);
+  border-color: var(--lb-citrine);
+  box-shadow: 0 0 0 3px rgba(255, 210, 63, 0.18), 0 0 24px -4px rgba(255, 210, 63, 0.55);
 }
 
 .inputMb {
@@ -98,73 +112,28 @@
   min-height: 140px;
 }
 
-.packageGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.packageCard {
-  border-radius: 16px;
-  padding: 1.5rem 1rem;
-  cursor: pointer;
+.priceSummary {
+  background: rgba(126, 59, 255, 0.12);
+  border: 1px solid rgba(165, 123, 255, 0.35);
+  border-radius: var(--lb-radius-md);
+  padding: 1.25rem;
   text-align: center;
-  color: #f0eee8;
-  font-family: inherit;
-  width: 100%;
-  min-height: 48px;
-  transition: border-color 0.2s, background 0.2s;
 }
 
-.packageCardDefault {
-  background: #131729;
-  border: 1px solid rgba(240, 238, 232, 0.07);
+.priceAmount {
+  font-family: var(--lb-font-display), serif;
+  font-size: 2rem;
+  line-height: 1;
 }
 
-.packageCardSelected {
-  background: rgba(255, 45, 120, 0.08);
-  border: 1px solid rgba(255, 45, 120, 0.4);
-}
-
-.packageCardFeatured {
-  position: relative;
-}
-
-.packageBadge {
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(135deg, #ff2d78, #c026d3);
-  color: white;
-  font-size: 0.65rem;
-  font-weight: 800;
-  padding: 0.25rem 0.75rem;
-  border-radius: 100px;
-  white-space: nowrap;
-}
-
-.packagePrice {
-  font-family: var(--font-manrope), sans-serif;
-  font-size: 1.8rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-.packageName {
-  font-size: 0.85rem;
-  font-weight: 800;
-  margin: 0.5rem 0;
-}
-
-.packageDetail {
-  font-size: 0.75rem;
-  color: rgba(240, 238, 232, 0.5);
-  line-height: 1.5;
+.priceDetail {
+  margin-top: 0.4rem;
+  font-size: 0.82rem;
+  color: var(--lb-mist-2);
 }
 
 .error {
-  color: #ff79a8;
+  color: var(--lb-magenta);
   font-size: 0.85rem;
   margin-top: 1rem;
 }
@@ -180,9 +149,9 @@
   padding: 0.9rem 1.2rem;
   min-height: 48px;
   background: transparent;
-  border: 1px solid rgba(240, 238, 232, 0.1);
-  border-radius: 100px;
-  color: rgba(240, 238, 232, 0.6);
+  border: 1px solid rgba(165, 123, 255, 0.32);
+  border-radius: var(--lb-radius-full);
+  color: var(--lb-mist);
   font-weight: 600;
   cursor: pointer;
   font-family: inherit;
@@ -193,14 +162,15 @@
   flex: 2;
   padding: 0.9rem 1.2rem;
   min-height: 48px;
-  background: linear-gradient(135deg, #ff2d78, #c026d3);
+  background: linear-gradient(135deg, #7e3bff 0%, #ff2bb1 55%, #ff8a2a 100%);
   border: none;
-  border-radius: 100px;
-  color: white;
-  font-weight: 800;
+  border-radius: var(--lb-radius-full);
+  color: var(--lb-ink);
+  font-weight: 700;
   cursor: pointer;
   font-family: inherit;
   font-size: 1rem;
+  box-shadow: 0 14px 36px -14px rgba(255, 43, 177, 0.55);
 }
 
 .btnPrimary:disabled {
@@ -212,14 +182,6 @@
   .shell {
     padding: 1.5rem 1rem;
     padding-top: max(1.5rem, env(safe-area-inset-top));
-  }
-
-  .packageGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .packageCardFeatured {
-    margin-top: 0.5rem;
   }
 
   .actions {
@@ -234,7 +196,7 @@
 }
 
 @media (max-width: 380px) {
-  .packagePrice {
+  .priceAmount {
     font-size: 1.5rem;
   }
 }

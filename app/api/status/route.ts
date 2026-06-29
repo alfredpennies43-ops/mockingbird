@@ -6,7 +6,6 @@ import { PRICE_IDS } from '@/lib/pricing'
 
 export async function GET() {
   const priceOne = PRICE_IDS.ONE_SONG
-  const priceThree = PRICE_IDS.THREE_SONGS
 
   return NextResponse.json({
     ok: true,
@@ -25,7 +24,6 @@ export async function GET() {
     appUrl: getAppUrl(),
     urlSources: getAppUrlDebug(),
     priceOneSongConfigured: !priceOne.includes('REPLACE'),
-    priceThreeSongsConfigured: !priceThree.includes('REPLACE'),
     priceOneSongPrefix: priceOne.slice(0, 10),
   })
 }

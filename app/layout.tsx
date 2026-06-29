@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
-import { Manrope } from 'next/font/google'
+import { Outfit } from 'next/font/google'
 import './globals.css'
 
-const manrope = Manrope({
+const outfit = Outfit({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-manrope',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-outfit',
   display: 'swap',
 })
 
@@ -22,8 +22,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={manrope.variable}>
-      <body className={manrope.className}>
+    <html lang="en" className={outfit.variable}>
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className={outfit.className}>
         {children}
         <SpeedInsights />
       </body>

@@ -5,12 +5,23 @@ import { generateSong } from './mureka'
 import { sendSongEmail } from './resend'
 import { Order, PendingOrder, QuestionnaireData, SongPage } from './types'
 
+function orderRefKey(orderRef: string) {
+  return `orderRef:${orderRef}`
+}
+
+export async function getOrderIdForRef(orderRef: string): Promise<string | null> {
+  return kv.get<string>(orderRefKey(orderRef))
+}
+
 export async function processOrder(
   questionnaireData: QuestionnaireData,
-  orderRef: string
+  orderRef: string,
+  options?: { retryOrderId?: string }
 ): Promise<void> {
-  const orderId = crypto.randomUUID()
-  const songPageId = crypto.randomUUID()
+  const mappedOrderId = options?.retryOrderId ?? (await getOrderIdForRef(orderRef))
+  const orderId = mappedOrderId ?? crypto.randomUUID()
+  const previousOrder = mappedOrderId ? await kv.get<Order>(`order:${orderId}`) : null
+  const songPageId = previousOrder?.songPageId ?? crypto.randomUUID()
 
   const order: Order = {
     id: orderId,
@@ -18,23 +29,21 @@ export async function processOrder(
     status: 'generating',
     songUrls: [],
     songPageId,
-    createdAt: Date.now(),
+    createdAt: previousOrder?.createdAt ?? Date.now(),
     paidAt: Date.now(),
   }
 
   await kv.set(`order:${orderId}`, order)
-  await kv.del(`pending:${orderRef}`)
+  await kv.set(orderRefKey(orderRef), orderId, { ex: 60 * 60 * 24 })
 
-  console.log(`Order ${orderId} started for ${questionnaireData.recipientName}`)
+  console.log(
+    `Order ${orderId} ${mappedOrderId ? 'retrying' : 'started'} for ${questionnaireData.recipientName}`
+  )
 
   try {
     const { lyrics, murekaPrompt } = await generateLyricsAndPrompt(questionnaireData)
 
-    const songCount = questionnaireData.versions === 3 ? 3 : 1
-    const songPromises = Array.from({ length: songCount }, () =>
-      generateSong(murekaPrompt, lyrics)
-    )
-    const songUrls = await Promise.all(songPromises)
+    const songUrls = [await generateSong(murekaPrompt, lyrics)]
 
     const songPage: SongPage = {
       id: songPageId,
@@ -48,6 +57,7 @@ export async function processOrder(
 
     await kv.set(`song:${songPageId}`, songPage)
     await kv.set(`order:${orderId}`, { ...order, status: 'complete', songUrls })
+    await kv.del(`pending:${orderRef}`)
 
     const songPageUrl = `${getAppUrl()}/song/${songPageId}`
     console.log(`Order ${orderId} complete — song page: ${songPageUrl}`)
@@ -65,7 +75,8 @@ export async function processOrder(
       console.error(`Order ${orderId} email failed (song is still live):`, emailError)
     }
   } catch (error) {
-    console.error(`Order ${orderId} failed:`, error)
+    const message = error instanceof Error ? error.message : String(error)
+    console.error(`Order ${orderId} failed: ${message}`, error)
     await kv.set(`order:${orderId}`, { ...order, status: 'failed' })
     throw error
   }

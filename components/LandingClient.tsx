@@ -4,17 +4,6 @@ import { useEffect } from 'react'
 
 export default function LandingClient() {
   useEffect(() => {
-    const starsEl = document.getElementById('stars')
-    if (starsEl && starsEl.childElementCount === 0) {
-      for (let i = 0; i < 140; i++) {
-        const s = document.createElement('div')
-        s.className = 'star'
-        const size = Math.random() > 0.85 ? 2 : 1
-        s.style.cssText = `left:${Math.random() * 100}%;top:${Math.random() * 100}%;width:${size}px;height:${size}px;--d:${2 + Math.random() * 4}s;--dl:${Math.random() * 5}s;opacity:${0.1 + Math.random() * 0.4}`
-        starsEl.appendChild(s)
-      }
-    }
-
     function buildWaveform(id: string, gradient: string) {
       const el = document.getElementById(id)
       if (!el || el.childElementCount > 0) return
@@ -26,21 +15,7 @@ export default function LandingClient() {
         el.appendChild(b)
       })
     }
-    buildWaveform('wf1', 'linear-gradient(180deg, #ff2d78, #ff2d78)')
-
-    const chips = document.querySelectorAll('.price-chip')
-    const cta = document.getElementById('cardCta')
-    chips.forEach((chip) => {
-      chip.addEventListener('click', () => {
-        chips.forEach((c) => c.classList.remove('active'))
-        chip.classList.add('active')
-        const price = (chip as HTMLElement).dataset.price
-        if (cta && price) {
-          cta.textContent = `Create My Song for $${price} →`
-          cta.setAttribute('href', `/create?package=${price === '29' ? '3' : '1'}`)
-        }
-      })
-    })
+    buildWaveform('wf1', 'linear-gradient(180deg, #7E3BFF, #FF2BB1)')
 
     const obs = new IntersectionObserver(
       (entries) => {
